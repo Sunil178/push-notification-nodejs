@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Article</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.11.0/sweetalert2.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.11.0/sweetalert2.all.min.js"></script>
+    
 </head>
 <body>
     <h1>Display Articles</h1>
@@ -16,9 +20,10 @@
                     
                     <tr>    
                     <td><%= check.articlebody %></td>
-                    <td><a><button>Edit</button></a></td>
+                    <!-- <td><a><button>Edit</button></a></td> -->
                     <!-- <td><a><button>View</button></a></td> -->
-                    <td><a><button>Delete</button></a></td>
+                    <!-- <td><a><button>Delete</button></a></td> -->
+                        <td><a href=""><button class="btn">Notify</button></a></td>
                 </tr>
                   <% }); %>
            
@@ -28,5 +33,34 @@
     <ul>
       
     </ul>
+<script type="text/javascript">
+    $('.btn').on('click',(e)=>{
+        e.preventDefault();
+        swal({
+            title: "Are you sure?",
+            text: "You Article will get published!",
+            type: 'success',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Confirm!',
+            closeOnConfirm: false,
+            closeOnCancel: false
+        }).then((e)=>
+            {
+                if (e['value']){
+                alert("The alert was submitted by the user: ");
+                }
+                else{
+                    alert("The alert was dismissed by the user: ");
+                }
+            }
+        ).catch(function(reason){
+            alert("The alert was dismissed by the user: "+reason);
+        });
+
+    });
+</script>
 </body>
+
 </html>

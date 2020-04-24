@@ -14,4 +14,4 @@ router.get("/article",pushController.articlesGet);
 router.get("/article",pushController.articlesGet);
 router.get("/article",pushController.articlesGet);
 
-module.exports = router;
+module.exports = router;    
