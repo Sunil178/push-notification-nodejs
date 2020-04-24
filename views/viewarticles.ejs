@@ -23,11 +23,11 @@
             <% articles.forEach(function(check){ %>
 
             <tr>
-                <td class="art"><%= check.articlebody %></td>
+                <td class="art" id="node_send" value="<%= check.articlebody %>"><%= check.articlebody %></td>
                 <!-- <td><a><button>Edit</button></a></td> -->
                 <!-- <td><a><button>View</button></a></td> -->
                 <!-- <td><a><button>Delete</button></a></td> -->
-                <td><a href=""><button class="btn" value="<%= check.articlebody %>"</button>Notify</button></a></td>
+                <td><a href=""><button class="btn"  value="<%= check.articlebody %>">Notify</button></a></td>
             </tr>
             <% }); %>
 
@@ -40,6 +40,8 @@
     <script type="text/javascript">
         $('.btn').on('click', (e) => {
             e.preventDefault();
+            console.log($(this));
+            alert($(this).attr('value'))
             swal({
                 title: "Are you sure?",
                 text: "You Article will get published!",
@@ -52,7 +54,6 @@
                 closeOnCancel: false
             }).then((e) => {
                 if (e['value']) {
-                    alert("The alert was submitted by the user: ");
                     var data=$('.btn').val();
 
                     $.ajax({
