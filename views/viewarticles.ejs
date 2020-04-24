@@ -8,15 +8,25 @@
 <body>
     <h1>Display Articles</h1>
     <table>
-        <tr>
-        <th>
-            Articles
-        </th>
-    </tr>
-    <tr>
-        <td><%= article %></td>
-    </tr>
+        <thead>
+            <th>Articles</th>
+        </thead>
+        <tbody>
+                <% articles.forEach(function(check){ %>
+                    
+                    <tr>    
+                    <td><%= check.articlebody %></td>
+                    <td><a><button>Edit</button></a></td>
+                    <!-- <td><a><button>View</button></a></td> -->
+                    <td><a><button>Delete</button></a></td>
+                </tr>
+                  <% }); %>
+           
+        </tbody>
 
     </table>
+    <ul>
+      
+    </ul>
 </body>
 </html>

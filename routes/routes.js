@@ -9,5 +9,9 @@ router.get("/",pushController.article);
 //Form submit route
 router.post("/",pushController.articleSubmit);
 
+router.get("/article",pushController.articlesGet);
+
+router.get("/article",pushController.articlesGet);
+router.get("/article",pushController.articlesGet);
 
 module.exports = router;

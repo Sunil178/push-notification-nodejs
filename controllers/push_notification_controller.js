@@ -2,22 +2,10 @@
 const con = require("../connections/connection");
 
 function article(req, res) {
-var data=[]
-  //Get all data from the table to display
- var get_query="SELECT * FROM articles";
- con.connection.query(get_query,(err,result)=>{
-   if (err) throw err;
-   var data=result;
- });
 
- res.render("article.ejs",{
-    articles:data,
-});
-
-
+ res.render("article.ejs");
 }
 function articleSubmit(req, res) {
-var data="";
   article = req.body.articlebody;
   
   //connect to user database
@@ -25,13 +13,25 @@ var data="";
   con.connection.query(sql);
 
   //Render to view
-  res.render("viewarticles.ejs");
+    res.render("article.ejs");
+ 
 }
+var data=[]
 
 function articlesGet(req,res){
-//     var sql = "INSERT INTO articles (articlebody) VALUES ('"+article+"')";  
-//     //connect to user database
-//    con.connection.query(sql);
+  //Get all data from the table to display
+  var get_query="SELECT * FROM articles";
+  
+  con.connection.query(get_query,(err,result)=>{
+    if (err) throw err;
+    data=result;
+  });
+  
+  console.log(data);
+  res.render("viewarticles.ejs",{
+    articles:data,
+});
+
 }
 module.exports = {
   article,
