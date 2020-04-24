@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
-const http=require('http');
-const routes=require('./routes/routes');
-
+const http = require('http');
+const routes = require('./routes/routes');
+require("events").EventEmitter.prototype._maxListeners = 0;
 
 //Set View Engine To EJS
 app.set("view engine", "ejs");
@@ -26,7 +26,7 @@ app.use(routes);
 const httpServer = http.createServer(app);
 
 //server connection
-port=3000
+port = 3000
 httpServer.listen(port, () =>
-  console.log(`Express Running ${port}!`)
+    console.log(`Express Running ${port}!`)
 );
