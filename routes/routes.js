@@ -13,5 +13,6 @@ router.get("/article",pushController.articlesGet);
 
 router.get("/article",pushController.articlesGet);
 router.get("/article",pushController.articlesGet);
+router.post("/pushnotication",pushController.pushnotication);
 
 module.exports = router;    

@@ -21,20 +21,25 @@ var data=[]
 function articlesGet(req,res){
   //Get all data from the table to display
   var get_query="SELECT * FROM articles";
-  
+
   con.connection.query(get_query,(err,result)=>{
     if (err) throw err;
     data=result;
   });
   
-  console.log(data);
+  //console.log(data);
   res.render("viewarticles.ejs",{
     articles:data,
 });
 
 }
+function pushnotication(req,res){
+    console.log("helloo!!");
+    console.log(req.body.data);
+}
 module.exports = {
   article,
   articleSubmit,
   articlesGet,
+  pushnotication,
 };
