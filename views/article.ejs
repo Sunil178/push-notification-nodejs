@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form method="POST" action="/">
+        <label for="article">Article:</label><br>
+        <!-- <input type="text" id="article" name="article"><br> -->
+        <textarea id="article" name="articlebody"></textarea>
+        <br>
+        <input type="submit" id="lname" value="Submit">
+      </form>
+      
+      <ul>
+        <% articles.forEach(function(check){ %>
+            <li><%= check %></li>
+          <% }); %>
+      </ul>
+</body>
+</html>

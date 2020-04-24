@@ -2,6 +2,13 @@ const express = require('express');
 const app = express();
 const http=require('http');
 const routes=require('./routes/routes');
+
+
+//Set View Engine To EJS
+app.set("view engine", "ejs");
+// Set Static Directory
+app.use(express.static(__dirname + "/views"));
+
 //Get the post data from client
 app.use(
     express.urlencoded({
@@ -10,8 +17,10 @@ app.use(
 );
 app.use(express.json());
 
+
 //api routes
 app.use(routes);
+
 
 //server initialization
 const httpServer = http.createServer(app);
