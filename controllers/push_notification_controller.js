@@ -34,7 +34,7 @@ function articlesGet(req,res){
 
 }
 function pushnotication(req,res){
-    console.log("helloo!!");
+    
     console.log(req.body.data);
 }
 module.exports = {
