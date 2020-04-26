@@ -34,18 +34,18 @@ function articlesGet(req,res){
 }
 function pushnotication(req,res){
     var message = { 
-        registration_ids: ['registration_tokens'], // Multiple tokens in an array
-        collapse_key: 'your_collapse_key',
+        registration_ids: ['c7xt0GrC5NA:APA91bFuX5XfwyD0WmWs7svBYVgxumt5pbjC1GSCzu0G_xaI69hX49xvw01LGYjf9dPqmWQWRbdyXrV8h0TBhRYOXBEYABGsr3RuXtugZ1PVtsKIhUOV_yMhOUh_u_cMilLew1WOPBgz'], // Multiple tokens in an array
+        collapse_key: 'green',
         
         notification: {
-            title: 'Title of your push notification', 
-            body: 'Body of your push notification' 
+            title: 'Our First Message', 
+            body: req.body.data ,
         },
         
-        data: {  //you can send only notification or only data(or include both)
-            my_key: 'my value',
-            my_another_key: 'my another value'
-        }
+        // data: {  //you can send only notification or only data(or include both)
+        //   "Nick" : "Mario",
+        //   "Room" : "PortugalVSDenmark"
+        // }
     };
     push_notification(message);
 
