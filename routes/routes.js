@@ -4,15 +4,13 @@ const router = express();
 const pushController = require("../controllers/push_notification_controller");
 
 //Root route
-router.get("/",pushController.article);
+router.get("/", pushController.article);
 
 //Form submit route
-router.post("/",pushController.articleSubmit);
+router.post("/", pushController.articleSubmit);
 
-router.get("/article",pushController.articlesGet);
+router.get("/article", pushController.articlesGet);
 
-router.get("/article",pushController.articlesGet);
-router.get("/article",pushController.articlesGet);
-router.post("/pushnotication",pushController.pushnotication);
+router.post("/pushnotication", pushController.pushnotication);
 
-module.exports = router;    
+module.exports = router;

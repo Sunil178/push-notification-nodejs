@@ -21,7 +21,6 @@ var data=[]
 function articlesGet(req,res){
   //Get all data from the table to display
   var get_query="SELECT * FROM articles";
-
   con.connection.query(get_query,(err,result)=>{
     if (err) throw err;
     data=result;
