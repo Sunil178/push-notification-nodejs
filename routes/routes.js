@@ -13,4 +13,6 @@ router.get("/article", pushController.articlesGet);
 
 router.post("/pushnotication", pushController.pushnotication);
 
+router.post("/api/store-data", pushController.storeUser);
+
 module.exports = router;
