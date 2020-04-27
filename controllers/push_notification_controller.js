@@ -1,6 +1,8 @@
 //import mysql
 const con = require("../connections/connection");
 const {push_notification}=require("../connections/notification");
+var path = require('path');
+
 function article(req, res) {
 
  res.render("article.ejs");
@@ -40,12 +42,13 @@ function pushnotication(req,res){
         notification: {
             title: 'Our First Message', 
             body: req.body.data ,
+            //icon: '/home/pratik/Workspace/nodejsprogram/node-js-push-notication/views/img/1.png',
+            image_url:'/home/pratik/Workspace/nodejsprogram/node-js-push-notication/views/img/1.png',
         },
-        
-        // data: {  //you can send only notification or only data(or include both)
-        //   "Nick" : "Mario",
-        //   "Room" : "PortugalVSDenmark"
-        // }
+        data: {  //you can send only notification or only data(or include both)
+          "Nick" : "Mario",
+          "Room" : "PortugalVSDenmark"
+        }
     };
     push_notification(message);
 
