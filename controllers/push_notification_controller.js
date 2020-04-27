@@ -22,7 +22,7 @@ var data=[]
 
 function articlesGet(req,res){
   //Get all data from the table to display
-  var get_query="SELECT * FROM articles";
+  var get_query = "SELECT * FROM articles";
   con.connection.query(get_query,(err,result)=>{
     if (err) throw err;
     data=result;
@@ -35,8 +35,18 @@ function articlesGet(req,res){
 
 }
 function pushnotication(req,res){
-    var message = { 
-        registration_ids: ['eQ0QRZyQPhs:APA91bH735elxHMxw6AgdXtsKUxxibSXjYlIYfEu1VTCYJP-658a4-LTLIOFoiXQeifRlbKXyFemyDPa3mMygQVkHV7aNd0US05Y6o_QgbXayk1UBzTW-CLcsVZaTQL1GCdj7okIyfXf'], // Multiple tokens in an array
+  var get_query = "SELECT token FROM users";
+  con.connection.query(get_query,(err,result)=>{
+    if (err) res.send(err);
+
+    var tokens = new Set();
+    for (var i = 0; i < result.length; i++) {
+      tokens.add(result[i]['token']);
+    }
+    tokens = Array.from(tokens);
+    
+    var message = {
+        registration_ids: tokens, // Multiple tokens in an array
         collapse_key: 'green',
         
         notification: {
@@ -51,8 +61,11 @@ function pushnotication(req,res){
         }
     };
     push_notification(message);
+    
+  });
 
-    console.log(req.body.data);
+
+
 }
 
 function storeUser(req, res) {

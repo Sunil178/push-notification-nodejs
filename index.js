@@ -27,6 +27,6 @@ const httpServer = http.createServer(app);
 
 //server connection
 port = 3000
-httpServer.listen(port, () =>
+httpServer.listen(port, "127.0.0.1", () =>
     console.log(`Express Running ${port}!`)
 );
