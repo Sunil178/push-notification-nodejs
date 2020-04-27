@@ -17,8 +17,6 @@ function articleSubmit(req, res) {
     res.render("index.ejs");
   });
 
-  //Render to view
-
 }
 var data=[]
 
