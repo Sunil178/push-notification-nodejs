@@ -38,7 +38,7 @@ module.exports={
     connection : mysql.createConnection({
         host: "localhost",
         user: "root",
-        password: "Pr@tik12345",
+        password: "",
         database: "nodejs_push_notication",
         port: 3306
     }) 
