@@ -36,7 +36,7 @@ function articlesGet(req,res){
 }
 function pushnotication(req,res){
     var message = { 
-        registration_ids: ['c7xt0GrC5NA:APA91bFuX5XfwyD0WmWs7svBYVgxumt5pbjC1GSCzu0G_xaI69hX49xvw01LGYjf9dPqmWQWRbdyXrV8h0TBhRYOXBEYABGsr3RuXtugZ1PVtsKIhUOV_yMhOUh_u_cMilLew1WOPBgz'], // Multiple tokens in an array
+        registration_ids: ['eQ0QRZyQPhs:APA91bH735elxHMxw6AgdXtsKUxxibSXjYlIYfEu1VTCYJP-658a4-LTLIOFoiXQeifRlbKXyFemyDPa3mMygQVkHV7aNd0US05Y6o_QgbXayk1UBzTW-CLcsVZaTQL1GCdj7okIyfXf'], // Multiple tokens in an array
         collapse_key: 'green',
         
         notification: {
