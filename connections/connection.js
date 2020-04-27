@@ -20,7 +20,7 @@ mongoose.connect(mydb_url, {
 //export mysql connection
 module.exports={ 
     connection : mysql.createConnection({
-        host: "localhost",
+        host: "127.0.0.1",
         user: "root",
         password: "",
         database: "node_push_notication",
