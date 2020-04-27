@@ -13,7 +13,7 @@ function articleSubmit(req, res) {
   con.connection.query(sql);
 
   //Render to view
-    res.render("article.ejs");
+    res.render("index.ejs");
 
 }
 var data=[]
@@ -55,7 +55,10 @@ function pushnotication(req,res){
 function storeUser(req, res) {
   var sql = "INSERT INTO users (fuid, email, password, token) VALUES ('"+req.body.uid+"', '"+req.body.email+"', '"+req.body.password+"', '"+req.body.token+"')";  
   con.connection.query(sql);
-  res.send("success");
+  if (sql)
+	  res.send("success");
+	else
+		res.send("Failure");
 }
 
 module.exports = {
