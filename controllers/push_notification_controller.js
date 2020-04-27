@@ -5,17 +5,19 @@ var path = require('path');
 
 function article(req, res) {
 
- res.render("article.ejs");
+ res.render("index.ejs");
 }
 function articleSubmit(req, res) {
   article = req.body.articlebody;
   
   //connect to user database
   var sql = "INSERT INTO articles (articlebody) VALUES ('"+article+"')";  
-  con.connection.query(sql);
+  con.connection.query(sql, (err, result) => {
+  	if (err) throw err;
+    res.render("index.ejs");
+  });
 
   //Render to view
-    res.render("index.ejs");
 
 }
 var data=[]
@@ -57,11 +59,10 @@ function pushnotication(req,res){
 
 function storeUser(req, res) {
   var sql = "INSERT INTO users (fuid, email, password, token) VALUES ('"+req.body.uid+"', '"+req.body.email+"', '"+req.body.password+"', '"+req.body.token+"')";  
-  con.connection.query(sql);
-  if (sql)
-	  res.send("success");
-	else
-		res.send("Failure");
+  con.connection.query(sql, (err, result) => {
+  	if (err) res.send("Failure");
+  	res.send("Success");
+  });
 }
 
 module.exports = {

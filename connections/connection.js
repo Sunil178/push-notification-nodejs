@@ -25,6 +25,5 @@ module.exports={
         password: "",
         database: "node_push_notication",
         port: 3306
-    }) 
-
+    })
 }
