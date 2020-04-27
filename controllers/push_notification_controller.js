@@ -16,7 +16,7 @@ function articleSubmit(req, res) {
 
   //Render to view
     res.render("article.ejs");
- 
+
 }
 var data=[]
 
@@ -54,9 +54,17 @@ function pushnotication(req,res){
 
     console.log(req.body.data);
 }
+
+function storeUser(req, res) {
+  var sql = "INSERT INTO users (fuid, email, password, token) VALUES ('"+req.body.uid+"', '"+req.body.email+"', '"+req.body.password+"', '"+req.body.token+"')";  
+  con.connection.query(sql);
+  res.send("success");
+}
+
 module.exports = {
   article,
   articleSubmit,
   articlesGet,
   pushnotication,
+  storeUser,
 };

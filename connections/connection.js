@@ -3,7 +3,7 @@ const mysql = require("mysql");
 
 const mongoose = require('mongoose');
 
-const mydb_url = 'mongodb://admin:admin123@localhost:27017/Article?authSource=admin';
+const mydb_url = 'mongodb://localhost:27017';
 mongoose.connect(mydb_url, {
         useNewUrlParser: true,
         useUnifiedTopology: true
@@ -16,30 +16,14 @@ mongoose.connect(mydb_url, {
         }
     });
 
-    
-// //create connection for user database
-// var config={
-//     host: "localhost",
-//     user: "root",
-//     password: "Pr@tik12345",
-//     database: "nodejs_push_notication",
-//     port: 3306
-// }
-// var con = mysql.createConnection(config);
-
-// con.connect(function (err) {
-//     if (err) throw err;
-//     console.log(" Connected!");
-// });
-
 
 //export mysql connection
 module.exports={ 
     connection : mysql.createConnection({
         host: "localhost",
         user: "root",
-        password: "Pr@tik12345",
-        database: "nodejs_push_notication",
+        password: "",
+        database: "node_push_notication",
         port: 3306
     }) 
 
