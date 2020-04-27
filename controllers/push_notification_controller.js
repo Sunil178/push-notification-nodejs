@@ -13,7 +13,7 @@ function articleSubmit(req, res) {
   //connect to user database
   var sql = "INSERT INTO articles (articlebody) VALUES ('"+article+"')";  
   con.connection.query(sql, (err, result) => {
-  	if (err) throw err;
+  	if (err) res.send(err);
     res.render("index.ejs");
   });
 
