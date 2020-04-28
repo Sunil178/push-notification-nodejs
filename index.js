@@ -20,10 +20,9 @@ app.use(
 );
 app.use(express.json());
 
-
+global.appRootPath =__dirname+"/views/";
 //api routes
 app.use(routes);
-
 
 //server initialization
 const httpServer = http.createServer(app);

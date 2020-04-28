@@ -7,18 +7,27 @@ const express = require('express');
 const app = express();
 const dotenv = require('dotenv');
 dotenv.config();
-
+const multer=require("multer");
 var path = require('path');
 
 function article(req, res) {
-
+  //console.log(appRootPath);
   res.render("index.ejs");
 }
 
 function articleSubmit(req, res) {
-  article = req.body.articlebody;
-  //connect to user database
-  var sql = "INSERT INTO articles (articlebody) VALUES ('" + article + "')";
+  article_body = req.body.articlebody;
+  article_title=req.body.article_title;
+  //article_img=req.body.article_img;
+  fileName="img/"+req.body.file_name;
+//   console.log(filePath)
+//   console.log(article_body);
+//   // console.log(article_img);
+//  console.log(article_title);
+  
+
+  // connect to user database
+  var sql = `INSERT INTO articles (article_title,articlebody,article_img) VALUES ('${article_title}','${article_body}','${fileName}')`;
   con.connection.query(sql, (err, result) => {
     if (err) throw err;
     res.render("index.ejs");
@@ -43,6 +52,8 @@ function articlesGet(req, res) {
 }
 
 function pushnotication(req, res) {
+  message_data=req.body.data.split(",")
+
   var get_query = "SELECT token FROM users";
   con.connection.query(get_query, (err, result) => {
     if (err) res.send(err);
@@ -58,10 +69,10 @@ function pushnotication(req, res) {
       collapse_key: 'green',
 
       notification: {
-        title: 'Our First Message',
-        body: req.body.data,
-        
-        image_url: '/home/pratik/Workspace/nodejsprogram/node-js-push-notication/views/img/1.png',
+        title: message_data[0],
+        body: message_data[1],
+
+        image_url: message_data[2],
       },
       data: { //you can send only notification or only data(or include both)
         "Nick": "Mario",
