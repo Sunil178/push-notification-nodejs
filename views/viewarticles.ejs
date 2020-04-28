@@ -5,41 +5,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Article</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.11.0/sweetalert2.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.11.0/sweetalert2.all.min.js"></script>
-
 </head>
 
 <body>
-    <h1>Display Articles</h1>
-    <table border="2">
-        <thead>
-            <th>Articles</th>
-            <th>Notify</th>
+    <div class="container">
+        <h1>Display Articles</h1>
+        <table class="table table-striped">
+            <thead>
 
-        </thead>
-        <tbody>
-            <% articles.forEach(function(check){ %>
+                <th>Articles</th>
+                <th>Notify</th>
 
-            <tr>
-                <td class="art" id="node_send"><%= check.articlebody %></td>
-                <!-- <td><a><button>Edit</button></a></td> -->
-                <!-- <td><a><button>View</button></a></td> -->
-                <!-- <td><a><button>Delete</button></a></td> -->
-                <td><a href=""><button class="btn pqr"  value="<%= check.articlebody %>">Notify</button></a></td>
-            </tr>
-            <% }); %>
-        </tbody>
+            </thead>
 
-    </table>
-    <ul>
+            <tbody>
 
-    </ul>
+                <% articles.forEach(function(check){ %>
+                <tr>
+                    <td class="art" id="node_send"><%= check.articlebody %></td>
+                    <!-- <td><a><button>Edit</button></a></td> -->
+                    <!-- <td><a><button>View</button></a></td> -->
+                    <!-- <td><a><button>Delete</button></a></td> -->
+                    <td><a href=""><button class="btn btn-info pqr" value="<%= check.articlebody %>">Notify</button></a></td>
+                </tr>
+                <% }); %>
+
+            </tbody>
+        </table>
+    </div>
+</body>
+
     <script type="text/javascript">
-        $('.pqr').on('click', (e)=> {
+        $('.pqr').on('click', (e) => {
             // alert($(e.currentTarget).val());
-            var data=$(e.currentTarget).val();
+            var data = $(e.currentTarget).val();
             e.preventDefault();
             swal({
                 title: "Are you sure?",
@@ -57,7 +64,7 @@
                         type: "POST",
                         url: '/pushnotication/',
                         data: {
-                            data:data
+                            data: data
                         },
                         success: '',
                         dataType: '',

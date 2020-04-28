@@ -4,19 +4,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <title>Article Form</title>
 </head>
 
 <body>
-    <form method="POST" action="/">
-        <label for="article">Article:</label><br>
-        <!-- <input type="text" id="article" name="article"><br> -->
-        <textarea id="article" name="articlebody"></textarea>
-        <br>
-        <input type="submit" id="lname" value="Submit">
-    </form>
+    <div class="container">
 
-    <a href="/article">View Articles</a>
+            <h1 class="" style="justify-content: center;text-align: center;">Store Articles</h1><br>
+            
+        <form class="form" method="POST" action="/">
+            <label class="control-label col-sm-2" for="article-title">Article Title:</label><br>
+            <input type="text" id="article-title" class="form-control" name="article_title"><br>
+
+            <label class="control-label col-sm-2" for="article">Article Body:</label><br>
+            <textarea id="article" class="form-control" name="articlebody" rows="5" cols="5"></textarea><br>
+
+            <label class="control-label col-sm-2" for="article-img">Article Title:</label><br>
+            <input type="file" id="article-img"  class="form-control" name="article_img"><br>
+
+            <br>
+            <input type="submit" class="form-control btn-primary btn" id="lname" value="Submit">
+        </form>
+<br>
+<br>
+
+        <a class="btn btn-info" href="/article">View Articles</a>
+    </div>
 </body>
 
 </html>
