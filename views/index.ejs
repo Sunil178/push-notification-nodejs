@@ -14,8 +14,8 @@
 <body>
     <div class="container">
 
-            <h1 class="" style="justify-content: center;text-align: center;">Store Articles</h1><br>
-            
+        <h1 class="" style="justify-content: center;text-align: center;">Store Articles</h1><br>
+
         <form class="form" method="POST" action="/">
             <label class="control-label col-sm-2" for="article-title">Article Title:</label><br>
             <input type="text" id="article-title" class="form-control" name="article_title"><br>
@@ -24,24 +24,24 @@
             <textarea id="article" class="form-control" name="articlebody" rows="5" cols="5"></textarea><br>
 
             <label class="control-label col-sm-2" for="article-img">Article Image:</label><br>
-            <input type="file" id="article-img"  class="form-control" name="article_img"><br>
+            <input type="file" id="article-img" class="form-control" name="article_img"><br>
 
             <br>
             <input type="hidden" id="file_content" name="article_img_file" value="">
             <input type="hidden" id="file_name" name="file_name" value="">
             <input type="submit" class="form-control btn-primary btn" id="lname" value="Submit">
         </form>
-<br>
-<br>
+        <br>
+        <br>
 
-        <a class="btn btn-info" href="/article">View Articles</a>
+        <a class="btn btn-info" href="article">View Articles</a>
     </div>
 </body>
 <script type="text/javascript">
-$('#article-img').on('change',(e)=>{
-    $('file_content').val(e.target.files[0])
-    $('#file_name').val($(e.currentTarget).val().split("\\").pop());
-});
-
+    $('#article-img').on('change', (e) => {
+        $('file_content').val(e.target.files[0])
+        $('#file_name').val($(e.currentTarget).val().split("\\").pop());
+    });
 </script>
+
 </html>
