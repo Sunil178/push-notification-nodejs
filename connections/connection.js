@@ -1,6 +1,3 @@
-//Import dotenv package
-const dotenv = require('dotenv');
-dotenv.config();
 //import mysql
 const mysql = require("mysql");
 //Import mongoose
@@ -13,7 +10,7 @@ mongoose.connect(mydb_url, {
     },
     (err) => {
         if (!err) {
-            console.log('MongoDB Connected succesfully')
+            console.log('MongoDB Connected succesfully: '+`${process.env.MONGODB_PORT}`)
         } else {
             console.log('MongoDB Not Connected' + err)
         }
