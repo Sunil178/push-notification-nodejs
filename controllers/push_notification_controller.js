@@ -57,7 +57,7 @@ function articlesGet(req, res) {
 
 function pushnotication(req, res) {
   message_data=req.body.data.split(",")
-
+  //console.log(message_data)
   var get_query = "SELECT token FROM users";
   con.connection.query(get_query, (err, result) => {
     if (err) res.send(err);
@@ -75,7 +75,7 @@ function pushnotication(req, res) {
       notification: {
         title: message_data[0],
         body: message_data[1],
-        image_url: message_data[2],
+        image: "https://cdn.vox-cdn.com/thumbor/CcznmYG3iVJ6KOSklGohcKbvQ_w=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/10455373/mdoying_180118_2249_0338stills.jpg",
       },
       data: { //you can send only notification or only data(or include both)
         "Nick": "Mario",
