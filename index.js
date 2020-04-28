@@ -2,8 +2,11 @@ const express = require('express');
 const app = express();
 const http = require('http');
 const routes = require('./routes/routes');
+
 require("events").EventEmitter.prototype._maxListeners = 0;
 
+const dotenv = require('dotenv');
+dotenv.config();
 //Set View Engine To EJS
 app.set("view engine", "ejs");
 // Set Static Directory
@@ -26,7 +29,6 @@ app.use(routes);
 const httpServer = http.createServer(app);
 
 //server connection
-port = 3000
-httpServer.listen(port, "127.0.0.1", () =>
-    console.log(`Express Running ${port}!`)
+httpServer.listen(process.env.PORT, "127.0.0.1", () =>
+    console.log(`Express Running on port ${process.env.PORT}!`)
 );
