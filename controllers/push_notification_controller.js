@@ -7,9 +7,7 @@ const express = require('express');
 const app = express();
 const dotenv = require('dotenv');
 dotenv.config();
-const multer=require("multer");
-var path = require('path');
-
+var fs=require('fs');
 function article(req, res) {
   //console.log(appRootPath);
   res.render("index.ejs");
@@ -18,22 +16,28 @@ function article(req, res) {
 function articleSubmit(req, res) {
   article_body = req.body.articlebody;
   article_title=req.body.article_title;
-  //article_img=req.body.article_img;
   fileName="img/"+req.body.file_name;
-//   console.log(filePath)
-//   console.log(article_body);
-//   // console.log(article_img);
-//  console.log(article_title);
-  
-
+  console.log(fileName);
+  console.log(req.files.article_img.data)
+      
+    if (fileName != undefined) {
+      var path = appRootPath + fileName;
+      console.log(path)
+      flag = true
+      fs.writeFile(path + "", req.files.article_img.data, function (err) {
+        if (err) throw err;
+        console.log("Saved!");
+      });
+    }
   // connect to user database
   var sql = `INSERT INTO articles (article_title,articlebody,article_img) VALUES ('${article_title}','${article_body}','${fileName}')`;
   con.connection.query(sql, (err, result) => {
     if (err) throw err;
     res.render("index.ejs");
   });
-
 }
+
+
 var data = []
 
 function articlesGet(req, res) {
@@ -71,7 +75,6 @@ function pushnotication(req, res) {
       notification: {
         title: message_data[0],
         body: message_data[1],
-
         image_url: message_data[2],
       },
       data: { //you can send only notification or only data(or include both)

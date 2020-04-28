@@ -4,6 +4,9 @@ const http = require('http');
 const routes = require('./routes/routes');
 
 require("events").EventEmitter.prototype._maxListeners = 0;
+//TO get the file multipart data
+const busboyBodyParser = require('busboy-body-parser');
+app.use(busboyBodyParser());
 
 const dotenv = require('dotenv');
 dotenv.config();
