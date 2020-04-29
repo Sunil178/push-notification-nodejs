@@ -22,7 +22,7 @@ function articleSubmit(req, res) {
   // connect to user database
   var sql = `INSERT INTO articles (article_title,articlebody,article_img) VALUES ('${article_title}','${article_body}','${article_img_url}')`;
   con.connection.query(sql, (err, result) => {
-    if (err) throw err;
+    if (err) res.send(err);
     res.render("index.ejs");
   });
 }
@@ -76,7 +76,7 @@ function pushnotication(req, res) {
 
   });
 
-  
+
 }
 
 function storeUser(req, res) {
