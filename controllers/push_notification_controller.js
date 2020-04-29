@@ -25,14 +25,14 @@ function articleSubmit(req, res) {
       console.log(path)
       flag = true
       fs.writeFile(path + "", req.files.article_img.data, function (err) {
-        if (err) throw err;
+        if (err) res.send(err);
         console.log("Saved!");
       });
     }
   // connect to user database
   var sql = `INSERT INTO articles (article_title,articlebody,article_img) VALUES ('${article_title}','${article_body}','${fileName}')`;
   con.connection.query(sql, (err, result) => {
-    if (err) throw err;
+    if (err) res.send(err);
     res.render("index.ejs");
   });
 }
@@ -44,7 +44,7 @@ function articlesGet(req, res) {
   //Get all data from the table to display
   var get_query = "SELECT * FROM articles";
   con.connection.query(get_query, (err, result) => {
-    if (err) throw err;
+    if (err) res.send(err);
     data = result;
   });
 
