@@ -16,23 +16,13 @@ function article(req, res) {
 function articleSubmit(req, res) {
   article_body = req.body.articlebody;
   article_title=req.body.article_title;
-  fileName="img/"+req.body.file_name;
-  console.log(fileName);
-  console.log(req.files.article_img.data)
-      
-    if (fileName != undefined) {
-      var path = appRootPath + fileName;
-      console.log(path)
-      flag = true
-      fs.writeFile(path + "", req.files.article_img.data, function (err) {
-        if (err) res.send(err);
-        console.log("Saved!");
-      });
-    }
+  article_img_url=req.body.article_img_url;
+
+  //console.log(article_img_url);
   // connect to user database
-  var sql = `INSERT INTO articles (article_title,articlebody,article_img) VALUES ('${article_title}','${article_body}','${fileName}')`;
+  var sql = `INSERT INTO articles (article_title,articlebody,article_img) VALUES ('${article_title}','${article_body}','${article_img_url}')`;
   con.connection.query(sql, (err, result) => {
-    if (err) res.send(err);
+    if (err) throw err;
     res.render("index.ejs");
   });
 }
@@ -44,7 +34,7 @@ function articlesGet(req, res) {
   //Get all data from the table to display
   var get_query = "SELECT * FROM articles";
   con.connection.query(get_query, (err, result) => {
-    if (err) res.send(err);
+    if (err) throw err;
     data = result;
   });
 
@@ -57,7 +47,7 @@ function articlesGet(req, res) {
 
 function pushnotication(req, res) {
   message_data=req.body.data.split(",")
-  //console.log(message_data)
+  // console.log(message_data)
   var get_query = "SELECT token FROM users";
   con.connection.query(get_query, (err, result) => {
     if (err) res.send(err);
@@ -75,20 +65,18 @@ function pushnotication(req, res) {
       notification: {
         title: message_data[0],
         body: message_data[1],
+        image: message_data[2],
       },
       data: { //you can send only notification or only data(or include both)
-        image: "https://cdn.vox-cdn.com/thumbor/CcznmYG3iVJ6KOSklGohcKbvQ_w=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/10455373/mdoying_180118_2249_0338stills.jpg",
         "Nick": "Mario",
         "Room": "PortugalVSDenmark"
       }
     };
-
     push_notification(message);
 
   });
 
-
-
+  
 }
 
 function storeUser(req, res) {

@@ -23,11 +23,10 @@
             <label class="control-label col-sm-2" for="article">Article Body:</label><br>
             <textarea id="article" class="form-control" name="articlebody" rows="5" cols="5"></textarea><br>
 
-            <label class="control-label col-sm-2" for="article-img">Article Image:</label><br>
-            <input type="file" id="article-img" class="form-control" name="article_img"><br>
+            <label class="control-label col-sm-2" for="article-img">Article Image Url:</label><br>
+            <input type="text" id="article-img" class="form-control" name="article_img_url"><br>
 
             <br>
-            <input type="hidden" id="file_name" name="file_name" value="">
             <input type="submit" class="form-control btn-primary btn" id="sub" value="Submit">
         </form>
         <br>
@@ -37,10 +36,10 @@
     </div>
 </body>
 <script type="text/javascript">
-    $('#article-img').on('change', function(e){
-        console.log(e.target.files[0]);
-        $('#file_name').val($(e.currentTarget).val().split("\\").pop());
-    });
+//    $('#article-img').on('change', function(e){
+  //      console.log(e.target.files[0]);
+      //  $('#file_name').val($(e.currentTarget).val().split("\\").pop());
+    //});
 
 </script>
 
