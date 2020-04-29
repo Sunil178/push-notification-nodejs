@@ -3,11 +3,6 @@ const con = require("../connections/connection");
 const {
   push_notification
 } = require("../connections/notification");
-const express = require('express');
-const app = express();
-const dotenv = require('dotenv');
-dotenv.config();
-var fs=require('fs');
 function article(req, res) {
   //console.log(appRootPath);
   res.render("index.ejs");
@@ -17,7 +12,6 @@ function articleSubmit(req, res) {
   article_body = req.body.articlebody;
   article_title=req.body.article_title;
   article_img_url=req.body.article_img_url;
-
   //console.log(article_img_url);
   // connect to user database
   var sql = `INSERT INTO articles (article_title,articlebody,article_img) VALUES ('${article_title}','${article_body}','${article_img_url}')`;
@@ -28,13 +22,13 @@ function articleSubmit(req, res) {
 }
 
 
-var data = []
+var data = [];
 
 function articlesGet(req, res) {
   //Get all data from the table to display
   var get_query = "SELECT * FROM articles";
   con.connection.query(get_query, (err, result) => {
-    if (err) throw err;
+    if (err) res.send(err);
     data = result;
   });
 
