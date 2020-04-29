@@ -82,6 +82,7 @@ function pushnotication(req, res) {
         "Room": "PortugalVSDenmark"
       }
     };
+    
     push_notification(message);
 
   });

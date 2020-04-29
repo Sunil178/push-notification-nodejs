@@ -2,9 +2,9 @@
 const mysql = require("mysql");
 //Import mongoose
 const mongoose = require('mongoose');
-
 const dotenv = require('dotenv');
 dotenv.config();
+
 const mydb_url = 'mongodb://localhost:27017';
 mongoose.connect(mydb_url, {
         useNewUrlParser: true,
