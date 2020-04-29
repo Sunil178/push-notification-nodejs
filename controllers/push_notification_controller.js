@@ -3,6 +3,7 @@ const con = require("../connections/connection");
 const {
   push_notification
 } = require("../connections/notification");
+
 function article(req, res) {
   //console.log(appRootPath);
   res.render("index.ejs");
@@ -10,14 +11,16 @@ function article(req, res) {
 
 function articleSubmit(req, res) {
   article_body = req.body.articlebody;
-  article_title=req.body.article_title;
-  article_img_url=req.body.article_img_url;
-  //console.log(article_img_url);
+  article_title = req.body.article_title;
+  article_img_url = req.body.article_img_url;
+  console.log(req.body);
   // connect to user database
   var sql = `INSERT INTO articles (article_title,articlebody,article_img) VALUES ('${article_title}','${article_body}','${article_img_url}')`;
   con.connection.query(sql, (err, result) => {
-    if (err) {res.send(err);}
-    
+    if (err) {
+      res.send(err);
+    }
+
     res.render("index.ejs");
   });
 }
@@ -38,10 +41,23 @@ function articlesGet(req, res) {
   });
 
 }
+var article_data = [];
 
 function pushnotication(req, res) {
-  message_data=req.body.data.split(",")
-  // console.log(message_data)
+
+  message_data = req.body.data
+  //  console.log(message_data)
+  //Query to get the data from database for a particular id
+  var get_data_query = `SELECT * FROM articles where id=${message_data}`;
+
+  con.connection.query(get_data_query, (err, result) => {
+    if (err) res.send(err);
+    article_data = result;
+  });
+  //To wait until query gets executed
+  setTimeout(()=>{
+  console.log(article_data[0]["article_title"]);
+  },1000);
   var get_query = "SELECT token FROM users";
   con.connection.query(get_query, (err, result) => {
     if (err) res.send(err);
@@ -57,9 +73,9 @@ function pushnotication(req, res) {
       collapse_key: 'green',
 
       notification: {
-        title: message_data[0],
-        body: message_data[1],
-        image: message_data[2],
+        title: article_data[0]["article_title"],
+        body: article_data[0]["articlebody"],
+        image: article_data[0]["article_img"],
       },
       data: { //you can send only notification or only data(or include both)
         "Nick": "Mario",
@@ -67,7 +83,6 @@ function pushnotication(req, res) {
       }
     };
     push_notification(message);
-
   });
 
 
