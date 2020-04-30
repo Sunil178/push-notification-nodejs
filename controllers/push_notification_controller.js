@@ -31,9 +31,9 @@ function articleSubmit(req, res) {
   article_body = req.body.articlebody;
   article_title = req.body.article_title;
   article_img_url = req.body.article_img_url;
-  article_notification_text=req.body.notification_text;
-  article_main_source=req.body.main_source;
-//  console.log(req.body);
+  article_notification_text = req.body.notification_text;
+  article_main_source = req.body.main_source;
+  //  console.log(req.body);
 
   // connect to user database
   var sql = `INSERT INTO articles (article_title,articlebody,article_img,article_notification_text,article_main_source) VALUES ('${article_title}','${article_body}','${article_img_url}','${article_notification_text}','${article_main_source}')`;
@@ -65,15 +65,16 @@ var article_data = [];
 
 function pushnotication(req, res) {
 
-  message_data = req.body.data
-  //  // console.log(message_data)
+  var message_data = req.body.data
+   console.log(message_data)
   //Query to get the data from database for a particular id
   var get_data_query = `SELECT * FROM articles where id=${message_data}`;
-
+  con.connection.query(`UPDATE articles SET status='1' WHERE id = ${message_data}`);
   con.connection.query(get_data_query, (err, result) => {
     if (err) res.send(err);
     article_data = result;
   });
+
   //To wait until query gets executed
   setTimeout(() => {
     console.log(article_data[0]["article_title"]);
@@ -91,10 +92,10 @@ function pushnotication(req, res) {
     //tokens = Array.from(tokens);
     let start = 0;
     len = tokens.length;
-    ids = []
     let limit = 999
-    end = Math.ceil(len / limit);
-    while (start < end) {
+    //end = Math.ceil(len / limit);
+    end=1
+  while (start < end) {
 
       var message = {
         registration_ids: tokens.slice(limit * start, (start + 1) * limit), // Multiple tokens in an array
@@ -107,20 +108,18 @@ function pushnotication(req, res) {
         },
 
         data: { //you can send only notification or only data(or include both)
+          "article_id":message_data,
           "notification_text": article_data[0]["article_notification_text"],
           //"Room": "PortugalVSDenmark"
         }
       };
       push_notification(message);
       console.log("******************************************************************************")
-//      ids.push(tokens.slice(limit * start, (start + 1) * limit));
       start += 1
     }
     //console.log(ids)
-
-
   });
-
+  res.render(index.ejs)
 
 }
 

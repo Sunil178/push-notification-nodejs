@@ -41,7 +41,7 @@
                     <td><img src="<%= check.article_img %>" height="100px" width="100px"></td>
                     <td class="art" id="node_send"><%= check.article_notification_text %></td>
                     <td class="art" id="node_send"><%= check.article_main_source %></td>
-
+                    <input type="hidden" class="status" value="<%= check.status %>">
                     <!-- <td><a><button>Edit</button></a></td> -->
                     <!-- <td><a><button>View</button></a></td> -->
                     <!-- <td><a><button>Delete</button></a></td> -->
@@ -55,10 +55,42 @@
 </body>
 
     <script type="text/javascript">
-        $('.pqr').on('click', (e) => {
-            // alert($(e.currentTarget).val());
-            var data = $(e.currentTarget).val();
+        $('.pqr').on('click', function(e) {
             e.preventDefault();
+            if($(this).closest("tr").find(".status") .val()=='1'){
+                console.log("hi")
+                swal({
+                    title: "Your Article is Already Published?Resend Notification?",
+                    text: "You Article will get published!",
+                    type: 'success',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Confirm!',
+                }).then((e) => {
+                    if (e['value']) {
+                        $.ajax({
+                            type: "POST",
+                            url: '/pushnotication/',
+                            data: {
+                                data: data
+                            },
+                            success: '',
+                            dataType: '',
+                        });
+                    } else {
+                        //console.log(data.split(","))
+                        alert("The alert was dismissed by the user: ");
+                    }
+                }).catch(function (reason) {
+                    alert("The alert was dismissed by the user: " + reason);
+                });
+
+            }
+            else{
+            // alert($(e.currentTarget).val());
+            var data = $(this).val();
+            console.log(data)
             swal({
                 title: "Are you sure?",
                 text: "You Article will get published!",
@@ -87,7 +119,7 @@
             }).catch(function (reason) {
                 alert("The alert was dismissed by the user: " + reason);
             });
-
+        }
         });
     </script>
 </body>

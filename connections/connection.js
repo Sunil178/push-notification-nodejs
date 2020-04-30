@@ -1,11 +1,12 @@
 //import mysql
 const mysql = require("mysql");
+
 //Import mongoose
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const mydb_url = 'mongodb://localhost:27017';
+const mydb_url = `${process.env.MONGODB_CONNECTION}`;
 mongoose.connect(mydb_url, {
         useNewUrlParser: true,
         useUnifiedTopology: true
@@ -18,7 +19,6 @@ mongoose.connect(mydb_url, {
         }
     });
 
-
 //export mysql connection
 module.exports={ 
     connection : mysql.createConnection({
@@ -27,6 +27,7 @@ module.exports={
         password: `${process.env.MYSQL_PASSWORD}`,
         database: `${process.env.MYSQL_DATABASE}`,
         port:  `${process.env.MYSQL_PORT}`
-    }) 
+    }),
+
 
 }
