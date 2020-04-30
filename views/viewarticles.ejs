@@ -26,6 +26,8 @@
                 <th>Articles Title</th>
                 <th>Articles Body</th>
                 <th>Articles Image</th>
+                <th>Articles Notification Text</th>
+                <th>Articles Main Source</th>
                 <th>Notify</th>
 
             </thead>
@@ -37,12 +39,13 @@
                     <td><%= check.article_title %></td>
                     <td class="art" id="node_send"><%= check.articlebody %></td>
                     <td><img src="<%= check.article_img %>" height="100px" width="100px"></td>
+                    <td class="art" id="node_send"><%= check.article_notification_text %></td>
+                    <td class="art" id="node_send"><%= check.article_main_source %></td>
 
                     <!-- <td><a><button>Edit</button></a></td> -->
                     <!-- <td><a><button>View</button></a></td> -->
                     <!-- <td><a><button>Delete</button></a></td> -->
                     <td><a href=""><button class="btn btn-info pqr" value="<%= [check.id] %>">Notify</button></a></td>
-                    
                 </tr>
                 <% }); %>
 

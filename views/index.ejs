@@ -14,18 +14,23 @@
 <body>
     <div class="container">
 
-        <h1 class="" style="justify-content: center;text-align: center;">Store Articles</h1><br>
+        <h1 class="" style="justify-content: center;text-align: center;"> ARTICLE DASHBOARD </h1><br>
 
         <form class="form" id="myForm" action="/" method="POST">
-            <label class="control-label col-sm-2" for="article-title">Article Title:</label><br>
+            <label class="control-label col-sm-3" for="article-title">Article Heading:</label><br>
             <input type="text" id="article-title" class="form-control" name="article_title"><br>
 
-            <label class="control-label col-sm-2" for="article">Article Body:</label><br>
+            <label class="control-label col-sm-3" for="article">Article Summary:</label><br>
             <textarea id="article" class="form-control" name="articlebody" rows="5" cols="5"></textarea><br>
 
-            <label class="control-label col-sm-2" for="article-img">Article Image Url:</label><br>
+            <label class="control-label col-sm-3" for="article-img">Article Image Url:</label><br>
             <input type="text" id="article-img" class="form-control" name="article_img_url"><br>
 
+            <label class="control-label col-sm-3" for="notification-text">Notification Text:</label><br>
+            <input type="text" id="notification-text" class="form-control" name="notification_text"><br>
+
+            <label class="control-label col-sm-3" for="main-source">Main Source:</label><br>
+            <input type="text" id="main-source" class="form-control" name="main_source"><br>
             <br>
             <input type="submit" class="form-control btn-primary btn" id="sub" value="Submit">
         </form>

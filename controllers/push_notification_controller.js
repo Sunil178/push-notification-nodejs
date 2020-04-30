@@ -7,7 +7,14 @@ const {
 function article(req, res) {
   //console.log(appRootPath);
 
-  // var sql = `INSERT INTO users (fuid,email,password,token) VALUES ('V6mATfJzpMDls0uZIqVA','pratik@gmail.com','','d9Kulem6K0U:APA9bGvWEdD2gPXffZP7AZWssNAPAabgaAAokz7oieqgWweZKAdHDUxXw_0_QFGHL8f_CIM2_2_1_0PwlAYdkN3askkalLEcPPHvvpvuaf6zXIWN6JUyxGZxChstTzMNXAhRVf_i_DN1')`;
+  // var sql = `SELECT * FROM articles where id=1;`;
+  // con.connection.query(sql, (err, result) => {
+  // if (err){
+  //       res.send(err);
+  //     }
+  //     console.log(result);
+  //     console.log("Done")      
+  //   });     
 
   // for (let index = 0; index < 500; index++) {
   //   con.connection.query(sql, (err, result) => {
@@ -24,15 +31,16 @@ function articleSubmit(req, res) {
   article_body = req.body.articlebody;
   article_title = req.body.article_title;
   article_img_url = req.body.article_img_url;
-  //console.log(req.body);
+  article_notification_text=req.body.notification_text;
+  article_main_source=req.body.main_source;
+//  console.log(req.body);
 
   // connect to user database
-  var sql = `INSERT INTO articles (article_title,articlebody,article_img) VALUES ('${article_title}','${article_body}','${article_img_url}')`;
+  var sql = `INSERT INTO articles (article_title,articlebody,article_img,article_notification_text,article_main_source) VALUES ('${article_title}','${article_body}','${article_img_url}','${article_notification_text}','${article_main_source}')`;
   con.connection.query(sql, (err, result) => {
     if (err) {
       res.send(err);
     }
-
     res.render("index.ejs");
   });
 }
@@ -84,7 +92,7 @@ function pushnotication(req, res) {
     let start = 0;
     len = tokens.length;
     ids = []
-    let limit = 1500
+    let limit = 999
     end = Math.ceil(len / limit);
     while (start < end) {
 
@@ -99,8 +107,8 @@ function pushnotication(req, res) {
         },
 
         data: { //you can send only notification or only data(or include both)
-          "Nick": "Mario",
-          "Room": "PortugalVSDenmark"
+          "notification_text": article_data[0]["article_notification_text"],
+          //"Room": "PortugalVSDenmark"
         }
       };
       push_notification(message);
