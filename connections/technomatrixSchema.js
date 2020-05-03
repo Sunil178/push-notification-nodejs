@@ -9,7 +9,7 @@ const ArticleResponseSchema = new Schema({
         type: String,
     },
     date: {
-        type: String,
+        type: Date,
         default: moment().format('MMMM Do YYYY, h:mm:ss a'),
     },
 });

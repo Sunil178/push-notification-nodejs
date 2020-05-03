@@ -58,7 +58,7 @@
         $('.pqr').on('click', function(e) {
             e.preventDefault();
             if($(this).closest("tr").find(".status") .val()=='1'){
-                console.log("hi")
+                var data = $(this).val();
                 swal({
                     title: "Your Article is Already Published?Resend Notification?",
                     text: "You Article will get published!",
@@ -80,7 +80,7 @@
                         });
                     } else {
                         //console.log(data.split(","))
-                        alert("The alert was dismissed by the user: ");
+                        //alert("The alert was dismissed by the user: ");
                     }
                 }).catch(function (reason) {
                     alert("The alert was dismissed by the user: " + reason);
@@ -114,7 +114,7 @@
                     });
                 } else {
                     //console.log(data.split(","))
-                    alert("The alert was dismissed by the user: ");
+                  //  alert("The alert was dismissed by the user: ");
                 }
             }).catch(function (reason) {
                 alert("The alert was dismissed by the user: " + reason);
