@@ -5,30 +5,16 @@ const {
 } = require("../connections/notification");
 const {
   StoreResponseSchema
-} = require('../connections/technomatrixSchema');
+} = require("../connections/technomatrixSchema");
 //Import mongoose
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+var NotificationResponseReport = mongoose.model(
+  "NotificationResponseReport",
+  StoreResponseSchema
+);
 
 function article(req, res) {
-  //console.log(appRootPath);
-
-  // var sql = `SELECT * FROM articles where id=1;`;
-  // con.connection.query(sql, (err, result) => {
-  // if (err){
-  //       res.send(err);
-  //     }
-  //     console.log(result);
-  //     console.log("Done")      
-  //   });     
-
-  // for (let index = 0; index < 500; index++) {
-  //   con.connection.query(sql, (err, result) => {
-  //     if (err) {
-  //       res.send(err);
-  //     }
-  //     console.log("Done")      
-  //   });     
-  // }
+ 
   res.render("index.ejs");
 }
 
@@ -53,6 +39,8 @@ function articleSubmit(req, res) {
 var data = [];
 
 function articlesGet(req, res) {
+  // console.log(req.params.id)
+
   //Get all data from the table to display
   var get_query = "SELECT * FROM articles";
   con.connection.query(get_query, (err, result) => {
@@ -64,17 +52,56 @@ function articlesGet(req, res) {
   res.render("viewarticles.ejs", {
     articles: data,
   });
-
 }
-var article_data = [];
+var notification_send_report=[];
+
+function notificationReport(req,res){
+  var get_data_query = `SELECT * FROM articles where status='1'`;
+  con.connection.query(get_data_query, async (err, result) => {
+    if (err) res.send(err);
+    //article_data = await result;
+    notification_send_report=[]
+    await result.forEach(element => {
+       NotificationResponseReport.find({article_id:element['id']},(err,docs)=>{
+        //  console.log(docs[0]['article_response']);
+        if(docs.length!=0) {
+          //notification_send_report.push(element['id']);
+          notification_send_report.push({"article_id":element['id'],"article_title":element['article_title'],
+          "success_count":docs[0]["success_count"],"failure_count":docs[0]["failure_count"]});
+       }
+        });
+      
+    });
+
+  });
+
+  res.render("notification_report.ejs", {
+     notification_report: notification_send_report,
+  });
+}
+
+function notificationReportStats(req,res){
+  console.log(req.params.id)
+  
+  res.render("notification_report_stats.ejs", {
+    notification_stats: 1,
+ });
+}
+
 
 function pushnotication(req, res) {
+  var article_data = [];
   var store = 0;
+  var success_count=0;
+  var failure_count=0;
+  var store_response = [];
   var message_data = req.body.data;
-  console.log(message_data)
+  console.log(message_data);
   //Query to get the data from database for a particular id
   var get_data_query = `SELECT * FROM articles where id=${message_data}`;
-  con.connection.query(`UPDATE articles SET status='1' WHERE id = ${message_data}`);
+  con.connection.query(
+    `UPDATE articles SET status='1' WHERE id = ${message_data}`
+  );
 
   con.connection.query(get_data_query, (err, result) => {
     if (err) res.send(err);
@@ -88,20 +115,22 @@ function pushnotication(req, res) {
 
     //Sending the data to multiple users
     //var tokens = new Set();
-    var tokens = []
+    var tokens = [];
     for (var i = 0; i < result.length; i++) {
-      tokens.push(result[i]['token']);
+      tokens.push(result[i]["token"]);
     }
+
     var fcm_tokens = tokens.slice().reverse();
     //tokens = Array.from(tokens);
     let start = 0;
     len = tokens.length;
-    let limit = 999
+    let limit = 999;
     end = Math.ceil(len / limit);
+
     while (start < end) {
       var message = {
-        registration_ids: tokens.slice(limit * start, (start + 1) * limit ), // Multiple tokens in an array
-        collapse_key: 'Updates Available',
+        registration_ids: tokens.slice(limit * start, (start + 1) * limit), // Multiple tokens in an array
+        collapse_key: "Updates Available",
         content_available: true,
 
         notification: {
@@ -110,72 +139,94 @@ function pushnotication(req, res) {
           image: article_data[0]["article_img"],
         },
 
-        data: { //you can send only notification or only data(or include both)
-          "article_id": message_data,
-          "notification_text": article_data[0]["article_notification_text"],
-        }
+        data: {
+          //you can send only notification or only data(or include both)
+          article_id:message_data,
+          notification_text: article_data[0]["article_notification_text"],
+          article_main_source: article_data[0]["article_main_source"],
+        },
       };
       async function makeRequest() {
         try {
           const result = JSON.parse(await push_notification(message));
-
           console.log("Resolved", result);
-
         } catch (error) {
 
-          let TechnoMatrix = mongoose.model('TechnoMatrix', StoreResponseSchema, message_data);
-          var store_response = [];
-
           response = JSON.parse(error);
+          //console.log(response);
+          success_count+=response["success"]
+          failure_count+=response["failure"]
           response_array = response["results"].slice().reverse();
-          
+
           let i = 0;
           console.log(store);
           while (i < response_array.length) {
             if (response_array[i]["message_id"] != null) {
               // documents array
               store_response.push({
-                notification_response: response_array[i]['message_id'],
+                notification_response: response_array[i]["message_id"],
                 fcm_token: fcm_tokens[store],
               });
-              store+=1;
+              store += 1;
             } else {
               // documents array
               store_response.push({
-                notification_response: response_array[i]['error'],
+                notification_response: response_array[i]["error"],
                 fcm_token: fcm_tokens[store],
               });
-              store+=1;
+              store += 1;
             }
-            i+=1
+            i += 1;
           }
           //store+=1;
-          console.log(store)
+          console.log(store);
 
-          TechnoMatrix.collection.insertMany(store_response, function (err, docs) {
-            if (err) {
-              return console.error(err);
-            } else {
-              console.log("Multiple documents inserted to Collection");
-            }
-          });
-        
           //console.log("rejected",error);
         }
+        if (store == tokens.length) {
+          var store_notification_response = {
+            article_id: message_data,
+            success_count:success_count,
+            failure_count:failure_count,
+            article_response: store_response.reverse(),
+          };
+          NotificationResponseReport.collection.insertOne(
+            store_notification_response,
+            function (err, docs) {
+              if (err) {
+                return console.error("my error", err);
+              } else {
+                console.log("Multiple documents inserted to Collection");
+              }
+            }
+          );
+        }
       }
+
       makeRequest();
-      console.log("******************************************************************************")
-      start += 1
+
+      console.log(
+        "******************************************************************************"
+      );
+      start += 1;
     }
 
     res.render("index.ejs");
     //console.log(ids)
   });
-
 }
 
 function storeUser(req, res) {
-  var sql = "INSERT INTO users (fuid, email, password, token) VALUES ('" + req.body.uid + "', '" + req.body.email + "', '" + req.body.password + "', '" + req.body.token + "')";
+  var sql =
+    "INSERT INTO users (fuid, email, password, token) VALUES ('" +
+    req.body.uid +
+    "', '" +
+    req.body.email +
+    "', '" +
+    req.body.password +
+    "', '" +
+    req.body.token +
+    "')";
   con.connection.query(sql, (err, result) => {
     if (err) res.send("Failure");
     res.send("Success");
@@ -188,4 +239,6 @@ module.exports = {
   articlesGet,
   pushnotication,
   storeUser,
+  notificationReport,
+  notificationReportStats,
 };

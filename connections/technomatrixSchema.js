@@ -1,19 +1,32 @@
 const mongoose = require('mongoose');
-const moment =require('moment');
+const moment = require('moment');
 const Schema = mongoose.Schema;
 const ArticleResponseSchema = new Schema({
-    notification_response:{
+    article_id: {
         type: String,
     },
-    fcm_token: {
+    success_count:{
         type: String,
+
     },
+    failure_count:{
+        type: String,
+
+    },
+    article_response:[{
+        notification_response: {
+            type: String,
+        },
+        fcm_token: {
+            type: String,
+        },
+    }],
     date: {
         type: Date,
-        default: moment().format('MMMM Do YYYY, h:mm:ss a'),
+        default: Date.now(),
     },
 });
 
 module.exports = {
-    "StoreResponseSchema":ArticleResponseSchema,
+    "StoreResponseSchema": ArticleResponseSchema,
 }

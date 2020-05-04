@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <title>Notification Report</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.11.0/sweetalert2.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.11.0/sweetalert2.all.min.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Articles Display </h1>
+        <a class="btn btn-primary" style="justify-content: right;text-align: right;" href="/">Add Articles</a>
+
+        <table class="table table-striped">
+            <thead>
+                <th>Article Id</th>
+                <th>Articles Title</th>
+                <th>Success Count</th>
+                <th>Failure Count</th>
+                <th>View Reports</th>
+
+            </thead>
+
+            <tbody>
+                <% notification_report.forEach(function(element){ %>
+                <tr>
+                  <td><%= element['article_id'] %></td>
+                  <td><%= element['article_title'] %></td>
+                  <td><%= element['success_count'] %></td>
+                  <td><%= element['failure_count'] %></td>
+                  <td><a href="/notification_report/stats/<%=element['article_id']%>" class="btn btn-info">View Report</a></td>
+                </tr>
+                <% }); %>
+
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

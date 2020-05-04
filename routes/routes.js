@@ -9,10 +9,15 @@ router.get("/", pushController.article);
 //Form submit route
 router.post("/", pushController.articleSubmit);
 
-router.get("/article", pushController.articlesGet);
+router.get("/article/", pushController.articlesGet);
 
 router.post("/pushnotication", pushController.pushnotication);
 
+router.get("/notification_report/", pushController.notificationReport);
+
+router.get("/notification_report/stats/:id",pushController.notificationReportStats);
+
 router.post("/api/store-data", pushController.storeUser);
+
 
 module.exports = router;
