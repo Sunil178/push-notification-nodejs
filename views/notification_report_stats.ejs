@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +13,31 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.11.0/sweetalert2.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.11.0/sweetalert2.all.min.js"></script>
 </head>
+
 <body>
-    <h1>Hello World</h1>
+    <div class="container">
+        <h1>Notification Stats </h1>
+        <a class="btn btn-primary" style="justify-content: right;text-align: right;" href="/">Add Articles</a>
+
+        <table class="table table-striped">
+            <thead>
+                <th>Sr No.</th>
+                <th>Email</th>
+                <th>Reponse</th>
+            </thead>
+
+            <tbody>
+                <% notification_stats.forEach(function(element,i){ %>
+                <tr>
+                    <td><%= i %></td>
+                    <td><%= users_info[i]['email'] %></td>
+                    <td><%= element['notification_response'] %></td>
+                </tr>
+                <% }); %>
+
+            </tbody>
+        </table>
+    </div>
 </body>
+
 </html>

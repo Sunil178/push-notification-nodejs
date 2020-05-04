@@ -67,7 +67,8 @@ function notificationReport(req,res){
         if(docs.length!=0) {
           //notification_send_report.push(element['id']);
           notification_send_report.push({"article_id":element['id'],"article_title":element['article_title'],
-          "success_count":docs[0]["success_count"],"failure_count":docs[0]["failure_count"]});
+          "success_count":docs[0]["success_count"],"failure_count":docs[0]["failure_count"],
+          "invalid_registration":docs[0]["invalid_registration"],"not_registered":docs[0]["not_registered"]});
        }
         });
       
@@ -80,18 +81,46 @@ function notificationReport(req,res){
   });
 }
 
+var notification_report_stats=[];
+var users_info=[];
 function notificationReportStats(req,res){
-  console.log(req.params.id)
   
+  NotificationResponseReport.find({article_id:req.params.id},(err,docs)=>{
+    notification_report_stats=[];
+    users_info=[];
+    if (err) res.send(err);
+
+    notification_report_stats=docs[0]["article_response"];
+    var get_data_query = `SELECT * FROM users`;
+    con.connection.query(get_data_query, async (err, result) => {
+        if (err) res.send(err);
+        users_info=result;
+        //console.log(result);
+      });
+    // console.log(docs[0]["article_response"].forEach(element=>{
+    //     notification_report_stats.push({
+          
+    //     });
+        // console.log(element['fcm_token'])
+    // }));
+
+  });
+
+
   res.render("notification_report_stats.ejs", {
-    notification_stats: 1,
+    notification_stats: notification_report_stats,
+    users_info,
  });
+
 }
 
 
 function pushnotication(req, res) {
   var article_data = [];
   var store = 0;
+  var invalid_registration_count=0;
+  var not_registered_count=0;
+
   var success_count=0;
   var failure_count=0;
   var store_response = [];
@@ -157,7 +186,7 @@ function pushnotication(req, res) {
           success_count+=response["success"]
           failure_count+=response["failure"]
           response_array = response["results"].slice().reverse();
-
+          console.log(response_array)
           let i = 0;
           console.log(store);
           while (i < response_array.length) {
@@ -170,10 +199,21 @@ function pushnotication(req, res) {
               store += 1;
             } else {
               // documents array
-              store_response.push({
-                notification_response: response_array[i]["error"],
-                fcm_token: fcm_tokens[store],
-              });
+              if(response_array[i]["error"]=="InvalidRegistration"){
+                invalid_registration_count+=1
+                store_response.push({
+                  notification_response: response_array[i]["error"],
+                  fcm_token: fcm_tokens[store],
+                });
+              }
+              else{
+                not_registered_count+=1
+                store_response.push({
+                  notification_response: response_array[i]["error"],
+                  fcm_token: fcm_tokens[store],
+                });
+              }
+              
               store += 1;
             }
             i += 1;
@@ -188,6 +228,8 @@ function pushnotication(req, res) {
             article_id: message_data,
             success_count:success_count,
             failure_count:failure_count,
+            invalid_registration:invalid_registration_count,
+            not_registered:not_registered_count,
             article_response: store_response.reverse(),
           };
           NotificationResponseReport.collection.insertOne(

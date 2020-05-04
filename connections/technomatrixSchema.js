@@ -11,7 +11,12 @@ const ArticleResponseSchema = new Schema({
     },
     failure_count:{
         type: String,
-
+    },
+    invalid_registration:{
+        type: String,
+    },
+    not_registered:{
+        type: String,
     },
     article_response:[{
         notification_response: {
