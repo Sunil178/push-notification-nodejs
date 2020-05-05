@@ -28,7 +28,7 @@ function articleSubmit(req, res) {
   //  console.log(req.body);
 
   // connect to user database
-  var sql = `INSERT INTO articles (article_title,articlebody,article_img,article_notification_text,article_main_source) VALUES ('${article_title}','${article_body}','${article_img_url}','${article_notification_text}','${article_main_source}')`;
+  var sql = `INSERT INTO articles (article_heading,article_summary,article_image,notification_text,main_source) VALUES ('${article_title}','${article_body}','${article_img_url}','${article_notification_text}','${article_main_source}')`;
   con.connection.query(sql, (err, result) => {
     if (err) {
       res.send(err);
@@ -145,10 +145,10 @@ function pushnotication(req, res) {
   //Query to get the data from database for a particular id
   var get_data_query = `SELECT * FROM articles where id=${message_data}`;
   
-  //Update Query for status
-  // con.connection.query(
-  //   `UPDATE articles SET status='1' WHERE id = ${message_data}`
-  // );
+  // Update Query for status
+  con.connection.query(
+    `UPDATE articles SET status='1' WHERE id = ${message_data}`
+  );
 
   con.connection.query(get_data_query, (err, result) => {
     if (err) res.send(err);

@@ -180,7 +180,12 @@
                             <td class="art"><%= check.notification_text %></td>
                             <td class="art"><%= check.notification_text %></td>
                             <td class="art"><%= check.article_status %></td>
-                            <td class="art"><%= check.notification_text %></td>
+                            <td class="art">
+                                <a><span class="btn btn-danger"><i class="fa fa-trash" title="Delete Sales"></i></span></a>
+                                <a><button type="button" class="btn btn-info"><i class="fa fa-edit"></i></button></a>
+                                <a><button type="button" class="btn btn-success"><i class="fa fa-eye"></i></button></a>
+                            </td>
+                            <input type="hidden" class="status" value="<%=[check.status]%>">
                             <% if(check.notification_text){ %>
                             <td><a href=""><button class="btn btn-info pqr"
                                         value="<%= [check.id] %>" name="notify_btn">Notify</button></a></td>
@@ -226,6 +231,7 @@
                               <td>"+check.notification_text+"</td>\
                               <td>"+check.article_status+"</td>\
                               <td>"+check.notification_text+"</td>\
+                              <input type='hidden' class='status' value='"+check.status+"'>\
                               <td><a href=''><button class='btn btn-info pqr' name='notify_btn' value='"+[check.id]+"'>Notify</button></a></td>\
                             </tr>\
                            ");
