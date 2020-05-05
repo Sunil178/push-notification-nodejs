@@ -8,6 +8,7 @@ const {
 } = require("../connections/technomatrixSchema");
 //Import mongoose
 const mongoose = require("mongoose");
+
 var NotificationResponseReport = mongoose.model(
   "NotificationResponseReport",
   StoreResponseSchema
@@ -43,15 +44,30 @@ function articlesGet(req, res) {
 
   //Get all data from the table to display
   var get_query = "SELECT * FROM articles";
-  con.connection.query(get_query, (err, result) => {
+  con.connection.query(get_query, async (err, result) => {
     if (err) res.send(err);
-    data = result;
+    data = await result;
   });
 
-  //console.log(data);
   res.render("viewarticles.ejs", {
-    articles: data,
+    articles: data.slice(0,15),
   });
+}
+
+function scroll_articles(req ,res){
+  var response=[];
+  start_index=Number(req.params.id);
+  //console.log("hii",start_index);
+
+  var get_query = "SELECT * FROM articles";
+  con.connection.query(get_query, async (err, result) => {
+    if (err)  response["status"]="error";
+    else{
+    data = await result;
+   
+  }
+  });
+    res.send(JSON.stringify(data.slice(start_index+1,start_index+10)));
 }
 var notification_send_report=[];
 
@@ -128,14 +144,18 @@ function pushnotication(req, res) {
   console.log(message_data);
   //Query to get the data from database for a particular id
   var get_data_query = `SELECT * FROM articles where id=${message_data}`;
-  con.connection.query(
-    `UPDATE articles SET status='1' WHERE id = ${message_data}`
-  );
+  
+  //Update Query for status
+  // con.connection.query(
+  //   `UPDATE articles SET status='1' WHERE id = ${message_data}`
+  // );
 
   con.connection.query(get_data_query, (err, result) => {
     if (err) res.send(err);
     article_data = result;
+
   });
+
 
   //To wait until query gets executed
   var get_query = "SELECT token FROM users";
@@ -144,12 +164,15 @@ function pushnotication(req, res) {
 
     //Sending the data to multiple users
     //var tokens = new Set();
+
     var tokens = [];
     for (var i = 0; i < result.length; i++) {
       tokens.push(result[i]["token"]);
     }
 
     var fcm_tokens = tokens.slice().reverse();
+    //console.log(fcm_tokens)
+
     //tokens = Array.from(tokens);
     let start = 0;
     len = tokens.length;
@@ -163,16 +186,15 @@ function pushnotication(req, res) {
         content_available: true,
 
         notification: {
-          title: article_data[0]["article_title"],
-          body: article_data[0]["articlebody"],
-          image: article_data[0]["article_img"],
+          title: article_data[0]["article_heading"],
+          body: article_data[0]["notification_text"],
+          image: article_data[0]["article_image"],
         },
 
         data: {
           //you can send only notification or only data(or include both)
           article_id:message_data,
-          notification_text: article_data[0]["article_notification_text"],
-          article_main_source: article_data[0]["article_main_source"],
+          article_main_source: article_data[0]["main_source"],
         },
       };
       async function makeRequest() {
@@ -283,4 +305,5 @@ module.exports = {
   storeUser,
   notificationReport,
   notificationReportStats,
+  scroll_articles,
 };

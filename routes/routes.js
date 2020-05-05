@@ -19,5 +19,6 @@ router.get("/notification_report/stats/:id",pushController.notificationReportSta
 
 router.post("/api/store-data", pushController.storeUser);
 
+router.get('/scroll_articles/:id',pushController.scroll_articles);
 
 module.exports = router;

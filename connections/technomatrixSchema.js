@@ -32,6 +32,7 @@ const ArticleResponseSchema = new Schema({
     },
 });
 
+
 module.exports = {
     "StoreResponseSchema": ArticleResponseSchema,
 }
