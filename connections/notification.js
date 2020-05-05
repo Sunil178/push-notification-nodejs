@@ -18,7 +18,6 @@ function push_notification(message) {
         console.log(leng)
         fcm.send(message,(err,response)=>{
             if (err) {
-
                 return reject(err);
             }
             return resolve(response);

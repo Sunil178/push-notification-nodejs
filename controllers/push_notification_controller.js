@@ -1,11 +1,7 @@
 //import mysql
 const con = require("../connections/connection");
-const {
-  push_notification
-} = require("../connections/notification");
-const {
-  StoreResponseSchema
-} = require("../connections/technomatrixSchema");
+const { push_notification } = require("../connections/notification");
+const { StoreResponseSchema } = require("../connections/technomatrixSchema");
 //Import mongoose
 const mongoose = require("mongoose");
 
@@ -15,7 +11,6 @@ var NotificationResponseReport = mongoose.model(
 );
 
 function article(req, res) {
- 
   res.render("index.ejs");
 }
 
@@ -50,101 +45,104 @@ function articlesGet(req, res) {
   });
 
   res.render("viewarticles.ejs", {
-    articles: data.slice(0,15),
+    articles: data.slice(0, 15),
   });
 }
 
-function scroll_articles(req ,res){
-  var response=[];
-  start_index=Number(req.params.id);
+function scroll_articles(req, res) {
+  var response = [];
+  start_index = Number(req.params.id);
   //console.log("hii",start_index);
 
   var get_query = "SELECT * FROM articles";
   con.connection.query(get_query, async (err, result) => {
-    if (err)  response["status"]="error";
-    else{
-    data = await result;
-   
-  }
+    if (err) response["status"] = "error";
+    else {
+      data = await result;
+    }
   });
-    res.send(JSON.stringify(data.slice(start_index+1,start_index+10)));
+  res.send(JSON.stringify(data.slice(start_index + 1, start_index + 10)));
 }
-var notification_send_report=[];
+var notification_send_report = [];
 
-function notificationReport(req,res){
+function notificationReport(req, res) {
   var get_data_query = `SELECT * FROM articles where status='1'`;
   con.connection.query(get_data_query, async (err, result) => {
     if (err) res.send(err);
     //article_data = await result;
-    notification_send_report=[]
-    await result.forEach(element => {
-       NotificationResponseReport.find({article_id:element['id']},(err,docs)=>{
-        //  console.log(docs[0]['article_response']);
-        if(docs.length!=0) {
-          //notification_send_report.push(element['id']);
-          notification_send_report.push({"article_id":element['id'],"article_title":element['article_title'],
-          "success_count":docs[0]["success_count"],"failure_count":docs[0]["failure_count"],
-          "invalid_registration":docs[0]["invalid_registration"],"not_registered":docs[0]["not_registered"]});
-       }
-        });
-      
+    notification_send_report = [];
+    await result.forEach((element) => {
+      NotificationResponseReport.find(
+        { article_id: element["id"] },
+        (err, docs) => {
+          //  console.log(docs[0]['article_response']);
+          if (docs.length != 0) {
+            //notification_send_report.push(element['id']);
+            notification_send_report.push({
+              article_id: element["id"],
+              article_title: element["article_title"],
+              success_count: docs[0]["success_count"],
+              failure_count: docs[0]["failure_count"],
+              invalid_registration: docs[0]["invalid_registration"],
+              not_registered: docs[0]["not_registered"],
+            });
+          }
+        }
+      );
     });
-
   });
 
   res.render("notification_report.ejs", {
-     notification_report: notification_send_report,
+    notification_report: notification_send_report,
   });
 }
 
-var notification_report_stats=[];
-var users_info=[];
-function notificationReportStats(req,res){
-  
-  NotificationResponseReport.find({article_id:req.params.id},(err,docs)=>{
-    notification_report_stats=[];
-    users_info=[];
-    if (err) res.send(err);
+var notification_report_stats = [];
+var users_info = [];
+function notificationReportStats(req, res) {
+  NotificationResponseReport.find(
+    { article_id: req.params.id },
+    (err, docs) => {
+      notification_report_stats = [];
+      users_info = [];
+      if (err) res.send(err);
 
-    notification_report_stats=docs[0]["article_response"];
-    var get_data_query = `SELECT * FROM users`;
-    con.connection.query(get_data_query, async (err, result) => {
+      notification_report_stats = docs[0]["article_response"];
+      var get_data_query = `SELECT * FROM users`;
+      con.connection.query(get_data_query, async (err, result) => {
         if (err) res.send(err);
-        users_info=result;
+        users_info = result;
         //console.log(result);
       });
-    // console.log(docs[0]["article_response"].forEach(element=>{
-    //     notification_report_stats.push({
-          
-    //     });
-        // console.log(element['fcm_token'])
-    // }));
+      // console.log(docs[0]["article_response"].forEach(element=>{
+      //     notification_report_stats.push({
 
-  });
-
+      //     });
+      // console.log(element['fcm_token'])
+      // }));
+    }
+  );
 
   res.render("notification_report_stats.ejs", {
     notification_stats: notification_report_stats,
     users_info,
- });
-
+  });
 }
-
 
 function pushnotication(req, res) {
   var article_data = [];
   var store = 0;
-  var invalid_registration_count=0;
-  var not_registered_count=0;
+  var invalid_registration_count = 0;
+  var not_registered_count = 0;
 
-  var success_count=0;
-  var failure_count=0;
+  var success_count = 0;
+  var failure_count = 0;
   var store_response = [];
   var message_data = req.body.data;
   console.log(message_data);
   //Query to get the data from database for a particular id
   var get_data_query = `SELECT * FROM articles where id=${message_data}`;
-  
+
   // Update Query for status
   con.connection.query(
     `UPDATE articles SET status='1' WHERE id = ${message_data}`
@@ -153,9 +151,7 @@ function pushnotication(req, res) {
   con.connection.query(get_data_query, (err, result) => {
     if (err) res.send(err);
     article_data = result;
-
   });
-
 
   //To wait until query gets executed
   var get_query = "SELECT token FROM users";
@@ -193,22 +189,61 @@ function pushnotication(req, res) {
 
         data: {
           //you can send only notification or only data(or include both)
-          article_id:message_data,
+          article_id: message_data,
           article_main_source: article_data[0]["main_source"],
         },
       };
       async function makeRequest() {
         try {
           const result = JSON.parse(await push_notification(message));
-          console.log("Resolved", result);
-        } catch (error) {
+          //console.log("Resolved", result);
+          response = JSON.parse(result);
+          //console.log(response);
+          success_count += response["success"];
+          failure_count += response["failure"];
+          response_array = response["results"].slice().reverse();
+          console.log(response_array);
+          let i = 0;
+          console.log(store);
+          while (i < response_array.length) {
+            if (response_array[i]["message_id"] != null) {
+              // documents array
+              store_response.push({
+                notification_response: response_array[i]["message_id"],
+                fcm_token: fcm_tokens[store],
+              });
+              store += 1;
+            }
+            // else {
+            //   // documents array
+            //   if(response_array[i]["error"]=="InvalidRegistration"){
+            //     invalid_registration_count+=1
+            //     store_response.push({
+            //       notification_response: response_array[i]["error"],
+            //       fcm_token: fcm_tokens[store],
+            //     });
+            //   }
+            //   else{
+            //     not_registered_count+=1
+            //     store_response.push({
+            //       notification_response: response_array[i]["error"],
+            //       fcm_token: fcm_tokens[store],
+            //     });
+            //   }
 
+            //   store += 1;
+            // }
+            i += 1;
+          }
+          //store+=1;
+          console.log(store);
+        } catch (error) {
           response = JSON.parse(error);
           //console.log(response);
-          success_count+=response["success"]
-          failure_count+=response["failure"]
+          success_count += response["success"];
+          failure_count += response["failure"];
           response_array = response["results"].slice().reverse();
-          console.log(response_array)
+          console.log(response_array);
           let i = 0;
           console.log(store);
           while (i < response_array.length) {
@@ -221,21 +256,20 @@ function pushnotication(req, res) {
               store += 1;
             } else {
               // documents array
-              if(response_array[i]["error"]=="InvalidRegistration"){
-                invalid_registration_count+=1
+              if (response_array[i]["error"] == "InvalidRegistration") {
+                invalid_registration_count += 1;
+                store_response.push({
+                  notification_response: response_array[i]["error"],
+                  fcm_token: fcm_tokens[store],
+                });
+              } else {
+                not_registered_count += 1;
                 store_response.push({
                   notification_response: response_array[i]["error"],
                   fcm_token: fcm_tokens[store],
                 });
               }
-              else{
-                not_registered_count+=1
-                store_response.push({
-                  notification_response: response_array[i]["error"],
-                  fcm_token: fcm_tokens[store],
-                });
-              }
-              
+
               store += 1;
             }
             i += 1;
@@ -248,10 +282,10 @@ function pushnotication(req, res) {
         if (store == tokens.length) {
           var store_notification_response = {
             article_id: message_data,
-            success_count:success_count,
-            failure_count:failure_count,
-            invalid_registration:invalid_registration_count,
-            not_registered:not_registered_count,
+            success_count: success_count,
+            failure_count: failure_count,
+            invalid_registration: invalid_registration_count,
+            not_registered: not_registered_count,
             article_response: store_response.reverse(),
           };
           NotificationResponseReport.collection.insertOne(
