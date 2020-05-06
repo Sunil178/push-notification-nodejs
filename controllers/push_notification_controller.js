@@ -11,7 +11,16 @@ var NotificationResponseReport = mongoose.model(
 );
 
 function article(req, res) {
+  for (let index = 0; index < 1000; index++) {
+    var sql = `INSERT INTO users (fuid,email,password,token) VALUES ('12345','patanahi@gmail.com','','erm-p1BHPCk:APA91bG21pYmqos39Ohs7oIlW9NT3vqoNsbFNRgKebggVKGVcTbIE6jDtKOGtQQdsZcFSV9wlugASDTAFR35b7BCJ_eryyhN1ojkPu5bUxya0DQl8HwagepYrduLoksrDX8hce-CVNSh')`;
+  con.connection.query(sql, (err, result) => {
+    if (err) {
+      res.send(err);
+    }
+  });
+  }
   res.render("index.ejs");
+
 }
 
 function articleSubmit(req, res) {
@@ -165,13 +174,14 @@ function pushnotication(req, res) {
       tokens.push(result[i]["token"]);
     }
 
-    var fcm_tokens = tokens.slice().reverse();
-    //console.log(fcm_tokens)
+   var fcm_tokens = tokens.slice().reverse();
+   //console.log(fcm_tokens.length)
 
     //tokens = Array.from(tokens);
     let start = 0;
     len = tokens.length;
-    let limit = 999;
+    //len=5
+    let limit =999;
     end = Math.ceil(len / limit);
 
     while (start < end) {
@@ -185,7 +195,6 @@ function pushnotication(req, res) {
           body: article_data[0]["notification_text"],
           image: article_data[0]["article_image"],
         },
-
         data: {
           //you can send only notification or only data(or include both)
           article_id: message_data,
@@ -194,14 +203,14 @@ function pushnotication(req, res) {
       };
       async function makeRequest() {
         try {
-          const result = JSON.parse(await push_notification(message));
+          const result = await push_notification(message);
           //console.log("Resolved", result);
           response = JSON.parse(result);
           //console.log(response);
           success_count += response["success"];
           failure_count += response["failure"];
           response_array = response["results"].slice().reverse();
-          console.log(response_array);
+          console.log("success",response);
           let i = 0;
           console.log(store);
           while (i < response_array.length) {
@@ -223,7 +232,7 @@ function pushnotication(req, res) {
           success_count += response["success"];
           failure_count += response["failure"];
           response_array = response["results"].slice().reverse();
-          console.log(response_array);
+          console.log("check",response);
           let i = 0;
           console.log(store);
           while (i < response_array.length) {
@@ -283,9 +292,7 @@ function pushnotication(req, res) {
 
       makeRequest();
 
-      console.log(
-        "******************************************************************************"
-      );
+      console.log("******************************************************************************" );
       start += 1;
     }
 
