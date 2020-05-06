@@ -43,7 +43,6 @@ function articlesGet(req, res) {
     if (err) res.send(err);
     data = await result;
   });
-
   res.render("viewarticles.ejs", {
     articles: data.slice(0, 15),
   });
@@ -214,25 +213,6 @@ function pushnotication(req, res) {
               });
               store += 1;
             }
-            // else {
-            //   // documents array
-            //   if(response_array[i]["error"]=="InvalidRegistration"){
-            //     invalid_registration_count+=1
-            //     store_response.push({
-            //       notification_response: response_array[i]["error"],
-            //       fcm_token: fcm_tokens[store],
-            //     });
-            //   }
-            //   else{
-            //     not_registered_count+=1
-            //     store_response.push({
-            //       notification_response: response_array[i]["error"],
-            //       fcm_token: fcm_tokens[store],
-            //     });
-            //   }
-
-            //   store += 1;
-            // }
             i += 1;
           }
           //store+=1;
