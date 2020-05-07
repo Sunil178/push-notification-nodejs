@@ -179,22 +179,23 @@ function pushnotication(req, res) {
     if (err) res.send(err);
 
     //Sending the data to multiple users
-    //var tokens = new Set();
+    var tokens = new Set();
 
-    var tokens = [];
+    //var tokens = [];
     for (var i = 0; i < result.length; i++) {
       tokens.push(result[i]["token"]);
     }
+
+    tokens = Array.from(tokens);
 
     var fcm_tokens = tokens.slice().reverse();
     //var fcm_tokens = tokens.slice(0,5).reverse();
     //console.log(fcm_tokens.length)
 
-    //tokens = Array.from(tokens);
     let start = 0;
-    //len = tokens.length;
-    len = 5
-    let limit = 5;
+    len = tokens.length;
+    //len = 5
+    let limit = 20;
     end = Math.ceil(len / limit);
 
     while (start < end) {
