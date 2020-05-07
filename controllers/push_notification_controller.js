@@ -1,7 +1,11 @@
 //import mysql
 const con = require("../connections/connection");
-const { push_notification } = require("../connections/notification");
-const { StoreResponseSchema } = require("../connections/technomatrixSchema");
+const {
+  push_notification
+} = require("../connections/notification");
+const {
+  StoreResponseSchema
+} = require("../connections/technomatrixSchema");
 //Import mongoose
 const mongoose = require("mongoose");
 
@@ -9,12 +13,13 @@ var NotificationResponseReport = mongoose.model(
   "NotificationResponseReport",
   StoreResponseSchema
 );
-var a=[];
+var a = [];
+
 function article(req, res) {
   //   for (let index = 0; index < 5000; index++) {
-      
+
   //     a.push(['fuid1234321hufebd','','','eKxlBWgpi3g:APA91bFJcZcCTP6H_jNyxQMsxHZmbEuAli822VSdQ9Xq1WJk774IFZx0kfNbt87xw7jU85MCYm6zWwDz3GpTPlFGWTsnY7WMVNYbcJk1-oPgeSNQ0yOrRkpME62fBxFRUM3J1VSZ3LII'])
-    
+
   //   }
   // var sql = `INSERT INTO users (fuid,email,password,token) VALUES ?`;
   // con.connection.query(sql, [a],(err, result) => {
@@ -49,7 +54,7 @@ var data = [];
 
 function articlesGet(req, res) {
   // console.log(req.params.id)
-  
+
   //Get all data from the table to display
   var get_query = "SELECT * FROM articles";
   con.connection.query(get_query, async (err, result) => {
@@ -84,15 +89,16 @@ function notificationReport(req, res) {
     //article_data = await result;
     notification_send_report = [];
     await result.forEach((element) => {
-      NotificationResponseReport.find(
-        { article_id: element["id"] },
+      NotificationResponseReport.find({
+          article_id: element["id"]
+        },
         (err, docs) => {
           //  console.log(docs[0]['article_response']);
           if (docs.length != 0) {
             //notification_send_report.push(element['id']);
             notification_send_report.push({
               article_id: element["id"],
-              article_title: element["article_title"],
+              article_title: element["article_heading"],
               success_count: docs[0]["success_count"],
               failure_count: docs[0]["failure_count"],
               invalid_registration: docs[0]["invalid_registration"],
@@ -111,9 +117,11 @@ function notificationReport(req, res) {
 
 var notification_report_stats = [];
 var users_info = [];
+
 function notificationReportStats(req, res) {
-  NotificationResponseReport.find(
-    { article_id: req.params.id },
+  NotificationResponseReport.find({
+      article_id: req.params.id
+    },
     (err, docs) => {
       notification_report_stats = [];
       users_info = [];
@@ -178,14 +186,15 @@ function pushnotication(req, res) {
       tokens.push(result[i]["token"]);
     }
 
-   var fcm_tokens = tokens.slice().reverse();
-   //console.log(fcm_tokens.length)
+    var fcm_tokens = tokens.slice().reverse();
+    //var fcm_tokens = tokens.slice(0,5).reverse();
+    //console.log(fcm_tokens.length)
 
     //tokens = Array.from(tokens);
     let start = 0;
-    len = tokens.length;
-    //len=5
-    let limit =999;
+    //len = tokens.length;
+    len = 5
+    let limit = 5;
     end = Math.ceil(len / limit);
 
     while (start < end) {
@@ -210,11 +219,11 @@ function pushnotication(req, res) {
           const result = await push_notification(message);
           //console.log("Resolved", result);
           response = JSON.parse(result);
-          //console.log(response);
+
           success_count += response["success"];
           failure_count += response["failure"];
           response_array = response["results"].slice().reverse();
-          console.log("success",response);
+          console.log("success", response);
           let i = 0;
           console.log(store);
           while (i < response_array.length) {
@@ -229,16 +238,15 @@ function pushnotication(req, res) {
             i += 1;
           }
           //store+=1;
-          console.log(store);
         } catch (error) {
           response = JSON.parse(error);
           //console.log(response);
           success_count += response["success"];
           failure_count += response["failure"];
           response_array = response["results"].slice().reverse();
-          console.log("check",response);
+          console.log("error", response);
           let i = 0;
-          console.log(store);
+
           while (i < response_array.length) {
             if (response_array[i]["message_id"] != null) {
               // documents array
@@ -268,11 +276,8 @@ function pushnotication(req, res) {
             i += 1;
           }
           //store+=1;
-          console.log(store);
-
-          //console.log("rejected",error);
         }
-        if (store == tokens.length) {
+        if (store == 5) {
           var store_notification_response = {
             article_id: message_data,
             success_count: success_count,
@@ -295,8 +300,7 @@ function pushnotication(req, res) {
       }
 
       makeRequest();
-
-      console.log("******************************************************************************" );
+      console.log("******************************************************************************");
       start += 1;
     }
 

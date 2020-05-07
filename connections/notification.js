@@ -9,8 +9,7 @@ const {
 const mongoose = require('mongoose');
 
 function push_notification(message) {
-    //let TechnoMatrix = mongoose.model('TechnoMatrix', StoreResponseSchema, message['data']['article_id']);
-    //var store_response = [];
+    
     return new Promise((resolve, reject) => {
     let leng = message["registration_ids"].length;
         console.log(leng)

@@ -18,14 +18,12 @@
     <div class="container">
         <h1>Notification Stats </h1>
         <a class="btn btn-primary" style="justify-content: right;text-align: right;" href="/">Add Articles</a>
-
         <table class="table table-striped">
             <thead>
                 <th>Sr No.</th>
                 <th>Email</th>
                 <th>Reponse</th>
             </thead>
-
             <tbody>
                 <% notification_stats.forEach(function(element,i){ %>
                 <tr>
@@ -34,7 +32,6 @@
                     <td><%= element['notification_response'] %></td>
                 </tr>
                 <% }); %>
-
             </tbody>
         </table>
     </div>
