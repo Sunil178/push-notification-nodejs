@@ -159,7 +159,8 @@ function pushnotication(req, res) {
   var failure_count = 0;
   var store_response = [];
   var message_data = req.body.data;
-  console.log(message_data);
+  
+  
   //Query to get the data from database for a particular id
   var get_data_query = `SELECT * FROM articles where id=${message_data}`;
 
@@ -179,15 +180,14 @@ function pushnotication(req, res) {
     if (err) res.send(err);
 
     //Sending the data to multiple users
-    var tokens = new Set();
 
-    //var tokens = [];
+    var tokens = [];
     for (var i = 0; i < result.length; i++) {
       tokens.push(result[i]["token"]);
     }
-
+    var tokens = new Set(tokens);
     tokens = Array.from(tokens);
-
+    //console.log(tokens.length);
     var fcm_tokens = tokens.slice().reverse();
     //var fcm_tokens = tokens.slice(0,5).reverse();
     //console.log(fcm_tokens.length)
@@ -195,7 +195,7 @@ function pushnotication(req, res) {
     let start = 0;
     len = tokens.length;
     //len = 5
-    let limit = 20;
+    let limit = 12;
     end = Math.ceil(len / limit);
 
     while (start < end) {
