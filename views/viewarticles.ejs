@@ -205,7 +205,7 @@
 </body>
 <script>
     $(window).scroll(function () {
-        if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+        if ($(window).scrollTop() + $(window).height() >= $(document).height() ) {
             var data=$('#start_point').val();
             //console.log($('#start_point').val());
             $.ajax({

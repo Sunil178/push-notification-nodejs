@@ -9,16 +9,20 @@ var NotificationResponseReport = mongoose.model(
   "NotificationResponseReport",
   StoreResponseSchema
 );
-
+var a=[];
 function article(req, res) {
-  for (let index = 0; index < 1000; index++) {
-    var sql = `INSERT INTO users (fuid,email,password,token) VALUES ('12345','patanahi@gmail.com','','erm-p1BHPCk:APA91bG21pYmqos39Ohs7oIlW9NT3vqoNsbFNRgKebggVKGVcTbIE6jDtKOGtQQdsZcFSV9wlugASDTAFR35b7BCJ_eryyhN1ojkPu5bUxya0DQl8HwagepYrduLoksrDX8hce-CVNSh')`;
-  con.connection.query(sql, (err, result) => {
-    if (err) {
-      res.send(err);
-    }
-  });
-  }
+  //   for (let index = 0; index < 5000; index++) {
+      
+  //     a.push(['fuid1234321hufebd','','','eKxlBWgpi3g:APA91bFJcZcCTP6H_jNyxQMsxHZmbEuAli822VSdQ9Xq1WJk774IFZx0kfNbt87xw7jU85MCYm6zWwDz3GpTPlFGWTsnY7WMVNYbcJk1-oPgeSNQ0yOrRkpME62fBxFRUM3J1VSZ3LII'])
+    
+  //   }
+  // var sql = `INSERT INTO users (fuid,email,password,token) VALUES ?`;
+  // con.connection.query(sql, [a],(err, result) => {
+  //   if (err) {
+  //     res.send(err);
+  //   }
+  //   console.log("Inserted Succesfully!!")
+  // });
   res.render("index.ejs");
 
 }
@@ -45,7 +49,7 @@ var data = [];
 
 function articlesGet(req, res) {
   // console.log(req.params.id)
-
+  
   //Get all data from the table to display
   var get_query = "SELECT * FROM articles";
   con.connection.query(get_query, async (err, result) => {
