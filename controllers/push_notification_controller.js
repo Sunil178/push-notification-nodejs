@@ -176,135 +176,154 @@ function pushnotication(req, res) {
 
   //To wait until query gets executed
   var get_query = "SELECT token FROM users";
-  con.connection.query(get_query, (err, result) => {
-    if (err) res.send(err);
+  var tokens = [];
 
-    //Sending the data to multiple users
-
-    var tokens = [];
-    for (var i = 0; i < result.length; i++) {
-      tokens.push(result[i]["token"]);
-    }
-    var tokens = Array.from(new Set(tokens));
-    console.log(tokens.length);
+  function get_tokens_query(){
+    return new Promise((resolve, reject) => {
+    con.connection.query(get_query, (err, result) => {
     
-    var fcm_tokens = tokens.slice().reverse();
-    let start = 0;
-    len = tokens.length;
-    //len = 5
-    let limit = 5;
-    end = Math.ceil(len / limit);
-
-    while (start < end) {
-      var message = {
-        registration_ids: tokens.slice(limit * start, (start + 1) * limit), // Multiple tokens in an array
-        collapse_key: "Updates Available",
-        content_available: true,
-
-        notification: {
-          title: article_data[0]["article_heading"],
-          body: article_data[0]["notification_text"],
-          image: article_data[0]["article_image"],
-        },
-        data: {
-          //you can send only notification or only data(or include both)
-          article_id: message_data,
-          article_main_source: article_data[0]["main_source"],
-        },
-      };
-      async function makeRequest() {
-        try {
-          const result = await push_notification(message);
-          //console.log("Resolved", result);
-          response = JSON.parse(result);
-
-          success_count += response["success"];
-          failure_count += response["failure"];
-          response_array = response["results"].slice().reverse();
-          console.log("success", response);
-          let i = 0;
-          console.log(store);
-          while (i < response_array.length) {
-            if (response_array[i]["message_id"] != null) {
-              // documents array
-              store_response.push({
-                notification_response: response_array[i]["message_id"],
-                fcm_token: fcm_tokens[store],
-              });
-              store += 1;
-            }
-            i += 1;
-          }
-          //store+=1;
-        } catch (error) {
-          response = JSON.parse(error);
-          //console.log(response);
-          success_count += response["success"];
-          failure_count += response["failure"];
-          response_array = response["results"].slice().reverse();
-          console.log("error", response);
-          let i = 0;
-
-          while (i < response_array.length) {
-            if (response_array[i]["message_id"] != null) {
-              // documents array
-              store_response.push({
-                notification_response: response_array[i]["message_id"],
-                fcm_token: fcm_tokens[store],
-              });
-              store += 1;
-            } else {
-              // documents array
-              if (response_array[i]["error"] == "InvalidRegistration") {
-                invalid_registration_count += 1;
-                store_response.push({
-                  notification_response: response_array[i]["error"],
-                  fcm_token: fcm_tokens[store],
-                });
-              } else {
-                not_registered_count += 1;
-                store_response.push({
-                  notification_response: response_array[i]["error"],
-                  fcm_token: fcm_tokens[store],
-                });
-              }
-
-              store += 1;
-            }
-            i += 1;
-          }
-          //store+=1;
-        }
-        if (store == tokens.length) {
-          var store_notification_response = {
-            article_id: message_data,
-            success_count: success_count,
-            failure_count: failure_count,
-            invalid_registration: invalid_registration_count,
-            not_registered: not_registered_count,
-            article_response: store_response.reverse(),
-          };
-          NotificationResponseReport.collection.insertOne(
-            store_notification_response,
-            function (err, docs) {
-              if (err) {
-                return console.error("my error", err);
-              } else {
-                console.log("Multiple documents inserted to Collection");
-              }
-            }
-          );
-        }
-      }
-
-      makeRequest();
-      console.log("******************************************************************************");
-      start += 1;
+    if (err) {
+      return reject(err);
     }
-
-    res.render("index.ejs");
+    return resolve(result);
     
   });
+});
+}
+(async () => {
+  try{  
+  const result = await get_tokens_query();
+  
+  //Sending the data to multiple users
+  for (var i = 0; i < result.length; i++) {
+    tokens.push(result[i]["token"]);
+  }
+  tokens = Array.from(new Set(tokens));
+
+  var fcm_tokens = tokens.slice().reverse();
+  let start = 0;
+  len = tokens.length;
+  //len = 5
+  let limit = 5;
+  end = Math.ceil(len / limit);
+
+  while (start < end) {
+    var message = {
+      registration_ids: tokens.slice(limit * start, (start + 1) * limit), // Multiple tokens in an array
+      collapse_key: "Updates Available",
+      content_available: true,
+
+      notification: {
+        title: article_data[0]["article_heading"],
+        body: article_data[0]["notification_text"],
+        image: article_data[0]["article_image"],
+      },
+      data: {
+        //you can send only notification or only data(or include both)
+        article_id: message_data,
+        article_main_source: article_data[0]["main_source"],
+      },
+    };
+    async function makeRequest() {
+      try {
+        const result = await push_notification(message);
+        //console.log("Resolved", result);
+        response = JSON.parse(result);
+
+        success_count += response["success"];
+        failure_count += response["failure"];
+        response_array = response["results"].slice().reverse();
+        console.log("success", response);
+        let i = 0;
+        console.log(store);
+        while (i < response_array.length) {
+          if (response_array[i]["message_id"] != null) {
+            // documents array
+            store_response.push({
+              notification_response: response_array[i]["message_id"],
+              fcm_token: fcm_tokens[store],
+            });
+            store += 1;
+          }
+          i += 1;
+        }
+        //store+=1;
+      } catch (error) {
+        response = JSON.parse(error);
+        //console.log(response);
+        success_count += response["success"];
+        failure_count += response["failure"];
+        response_array = response["results"].slice().reverse();
+        console.log("error", response);
+        let i = 0;
+
+        while (i < response_array.length) {
+          if (response_array[i]["message_id"] != null) {
+            // documents array
+            store_response.push({
+              notification_response: response_array[i]["message_id"],
+              fcm_token: fcm_tokens[store],
+            });
+            store += 1;
+          } else {
+            // documents array
+            if (response_array[i]["error"] == "InvalidRegistration") {
+              invalid_registration_count += 1;
+              store_response.push({
+                notification_response: response_array[i]["error"],
+                fcm_token: fcm_tokens[store],
+              });
+            } else {
+              not_registered_count += 1;
+              store_response.push({
+                notification_response: response_array[i]["error"],
+                fcm_token: fcm_tokens[store],
+              });
+            }
+
+            store += 1;
+          }
+          i += 1;
+        }
+        //store+=1;
+      }
+      if (store == tokens.length) {
+        var store_notification_response = {
+          article_id: message_data,
+          success_count: success_count,
+          failure_count: failure_count,
+          invalid_registration: invalid_registration_count,
+          not_registered: not_registered_count,
+          article_response: store_response.reverse(),
+        };
+        NotificationResponseReport.collection.insertOne(
+          store_notification_response,
+          function (err, docs) {
+            if (err) {
+              return console.error("my error", err);
+            } else {
+              console.log("Multiple documents inserted to Collection");
+            }
+          }
+        );
+      }
+    }
+
+    makeRequest();
+    console.log("******************************************************************************");
+    start += 1;
+  }
+
+  res.render("index.ejs");
+ console.log(tokens.length);
+  }
+
+  catch(err){
+    console.log(err)
+  }
+})();
+
+
 }
 
 function storeUser(req, res) {
