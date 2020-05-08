@@ -185,17 +185,14 @@ function pushnotication(req, res) {
     for (var i = 0; i < result.length; i++) {
       tokens.push(result[i]["token"]);
     }
-    var tokens = new Set(tokens);
-    tokens = Array.from(tokens);
-    //console.log(tokens.length);
+    var tokens = Array.from(new Set(tokens));
+    console.log(tokens.length);
+    
     var fcm_tokens = tokens.slice().reverse();
-    //var fcm_tokens = tokens.slice(0,5).reverse();
-    //console.log(fcm_tokens.length)
-
     let start = 0;
     len = tokens.length;
     //len = 5
-    let limit = 12;
+    let limit = 5;
     end = Math.ceil(len / limit);
 
     while (start < end) {
@@ -278,7 +275,7 @@ function pushnotication(req, res) {
           }
           //store+=1;
         }
-        if (store == 5) {
+        if (store == tokens.length) {
           var store_notification_response = {
             article_id: message_data,
             success_count: success_count,
@@ -306,7 +303,7 @@ function pushnotication(req, res) {
     }
 
     res.render("index.ejs");
-    //console.log(ids)
+    
   });
 }
 
