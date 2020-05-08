@@ -297,8 +297,11 @@
                         },
                         success: function(obj) {
                             console.log("reposne",JSON.parse(obj));
-                        },
-                        dataType: '',
+                            swal({
+                                title: JSON.parse(obj),
+                                type: 'success',
+                            });
+                        }
                     });
                 } else {
                     //console.log(data.split(","))
@@ -330,7 +333,13 @@
                         data: {
                             data: data
                         },
-                        success: '',
+                        success: function(obj) {
+                            console.log("reposonse",JSON.parse(obj));
+                            swal({
+                                title: JSON.parse(obj),
+                                type: 'success',
+                            });
+                        },
                         dataType: '',
                     });
                 } else {

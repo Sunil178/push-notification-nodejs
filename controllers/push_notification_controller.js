@@ -324,7 +324,7 @@ function pushnotication(req, res) {
   }
 })();
 
-res.send(JSON.stringify("Succesfully sent the data"));
+res.send(JSON.stringify("Succesfully sent the notification to users"));
 
 }
 
