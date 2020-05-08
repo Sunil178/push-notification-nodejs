@@ -193,23 +193,22 @@ function pushnotication(req, res) {
 (async () => {
   try{  
   const result = await get_tokens_query();
-  
+
   //Sending the data to multiple users
   for (var i = 0; i < result.length; i++) {
     tokens.push(result[i]["token"]);
   }
-  tokens = Array.from(new Set(tokens));
-
-  var fcm_tokens = tokens.slice().reverse();
+  var to = Array.from(new Set(tokens));
+  var fcm_tokens = to.slice().reverse();
   let start = 0;
-  len = tokens.length;
+  var len = to.length;
   //len = 5
   let limit = 5;
   end = Math.ceil(len / limit);
 
   while (start < end) {
     var message = {
-      registration_ids: tokens.slice(limit * start, (start + 1) * limit), // Multiple tokens in an array
+      registration_ids: to.slice(limit * start, (start + 1) * limit), // Multiple tokens in an array
       collapse_key: "Updates Available",
       content_available: true,
 
@@ -287,7 +286,7 @@ function pushnotication(req, res) {
         }
         //store+=1;
       }
-      if (store == tokens.length) {
+      if (store == len) {
         var store_notification_response = {
           article_id: message_data,
           success_count: success_count,
@@ -315,7 +314,6 @@ function pushnotication(req, res) {
   }
 
   res.render("index.ejs");
- console.log(tokens.length);
   }
 
   catch(err){
