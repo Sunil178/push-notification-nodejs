@@ -196,19 +196,21 @@ function pushnotication(req, res) {
 
   //Sending the data to multiple users
   for (var i = 0; i < result.length; i++) {
-    tokens.push(result[i]["token"]);
+    if(!tokens.includes(result[i]["token"])){
+      tokens.push(result[i]["token"]);
+    }
   }
-  var to = Array.from(new Set(tokens));
-  var fcm_tokens = to.slice().reverse();
+  //console.log(tokens.length);
+  var fcm_tokens = tokens.slice().reverse();
   let start = 0;
-  var len = to.length;
+  var len = tokens.length;
   //len = 5
   let limit = 5;
   end = Math.ceil(len / limit);
 
   while (start < end) {
     var message = {
-      registration_ids: to.slice(limit * start, (start + 1) * limit), // Multiple tokens in an array
+      registration_ids: tokens.slice(limit * start, (start + 1) * limit), // Multiple tokens in an array
       collapse_key: "Updates Available",
       content_available: true,
 
