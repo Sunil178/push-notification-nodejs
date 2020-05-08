@@ -196,11 +196,13 @@ function pushnotication(req, res) {
 
   //Sending the data to multiple users
   for (var i = 0; i < result.length; i++) {
-    if(!tokens.includes(result[i]["token"])){
-      tokens.push(result[i]["token"]);
-    }
+    // if(!tokens.includes(result[i]["token"])){
+    //   tokens.push(result[i]["token"]);
+    // }
+    tokens.push(result[i]["token"]);
+
   }
-  //console.log(tokens.length);
+  tokens=Array.from(new Set(tokens));
   var fcm_tokens = tokens.slice().reverse();
   let start = 0;
   var len = tokens.length;
@@ -315,7 +317,6 @@ function pushnotication(req, res) {
     start += 1;
   }
 
-  res.render("index.ejs");
   }
 
   catch(err){
@@ -323,6 +324,7 @@ function pushnotication(req, res) {
   }
 })();
 
+res.send(JSON.stringify("Succesfully sent the data"));
 
 }
 
