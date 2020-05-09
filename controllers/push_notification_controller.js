@@ -196,8 +196,8 @@ function pushnotication(req, res) {
   for (var i = 0; i < result.length; i++) {
     tokens.push(result[i]["token"]);
   }
-  // var to = Array.from(new Set(tokens));
-  var to = tokens;
+  var to = Array.from(new Set(tokens));
+  // var to = tokens;
   let start = 0;
   var len = to.length;
   //len = 5
