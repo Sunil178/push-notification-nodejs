@@ -18,7 +18,7 @@ var a = [];
 function article(req, res) {
   //   for (let index = 0; index < 5000; index++) {
 
-  //     a.push(['fuid1234321hufebd','','','eKxlBWgpi3g:APA91bFJcZcCTP6H_jNyxQMsxHZmbEuAli822VSdQ9Xq1WJk774IFZx0kfNbt87xw7jU85MCYm6zWwDz3GpTPlFGWTsnY7WMVNYbcJk1-oPgeSNQ0yOrRkpME62fBxFRUM3J1VSZ3LII'])
+  //     a.push(['','','',''])
 
   //   }
   // var sql = `INSERT INTO users (fuid,email,password,token) VALUES ?`;
@@ -212,7 +212,8 @@ function pushnotication(req, res) {
 
   while (start < end) {
     var message = {
-      registration_ids: tokens.slice(limit * start, (start + 1) * limit), // Multiple tokens in an array
+      //registration_ids: tokens.slice(limit * start, (start + 1) * limit), // Multiple tokens in an array
+      to: '',
       collapse_key: "Updates Available",
       content_available: true,
 
