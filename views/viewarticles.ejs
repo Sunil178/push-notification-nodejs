@@ -277,15 +277,7 @@
     $('body').on('click',"button[name=notify_btn]", function (e) {
         e.preventDefault();
         //alert($(this).attr("value"));
-        if ($(this).closest("tr").find(".status").val() == '1') {
-            var data = $(this).val();
-            swal({
-                title: "Notification for this article is already sent",
-                //text: "You Article will get published!",
-                type: 'info',
-            });
 
-        } else {
             // alert($(e.currentTarget).val());
             var data = $(this).val();
             //console.log(data)
@@ -323,7 +315,7 @@
             }).catch(function (reason) {
                 alert("The alert was dismissed by the user: " + reason);
             });
-        }
+        
     });
 </script>
 

@@ -18,7 +18,7 @@ var a = [];
 function article(req, res) {
   //   for (let index = 0; index < 5000; index++) {
 
-  //     a.push(['','','',''])
+  //     a.push(['fuid1234321hufebd','','','eKxlBWgpi3g:APA91bFJcZcCTP6H_jNyxQMsxHZmbEuAli822VSdQ9Xq1WJk774IFZx0kfNbt87xw7jU85MCYm6zWwDz3GpTPlFGWTsnY7WMVNYbcJk1-oPgeSNQ0yOrRkpME62fBxFRUM3J1VSZ3LII'])
 
   //   }
   // var sql = `INSERT INTO users (fuid,email,password,token) VALUES ?`;
@@ -61,9 +61,7 @@ function articlesGet(req, res) {
     if (err) res.send(err);
     data = await result;
   });
-  res.render("viewarticles.ejs", {
-    articles: data.slice(0, 15),
-  });
+  res.render("viewarticles.ejs", {"articles": data.slice(0, 15)});
 }
 
 function scroll_articles(req, res) {
@@ -196,24 +194,20 @@ function pushnotication(req, res) {
 
   //Sending the data to multiple users
   for (var i = 0; i < result.length; i++) {
-    // if(!tokens.includes(result[i]["token"])){
-    //   tokens.push(result[i]["token"]);
-    // }
     tokens.push(result[i]["token"]);
-
   }
-  tokens=Array.from(new Set(tokens));
-  var fcm_tokens = tokens.slice().reverse();
+  // var to = Array.from(new Set(tokens));
+  var to = tokens;
+  var fcm_tokens = to.slice().reverse();
   let start = 0;
-  var len = tokens.length;
+  var len = to.length;
   //len = 5
-  let limit = 5;
+  let limit = 4;
   end = Math.ceil(len / limit);
 
   while (start < end) {
     var message = {
-      //registration_ids: tokens.slice(limit * start, (start + 1) * limit), // Multiple tokens in an array
-      to: '',
+      registration_ids: to.slice(limit * start, (start + 1) * limit), // Multiple tokens in an array
       collapse_key: "Updates Available",
       content_available: true,
 
@@ -230,8 +224,7 @@ function pushnotication(req, res) {
     };
     async function makeRequest() {
       try {
-        const result = await push_notification(message);
-        //console.log("Resolved", result);
+        const result = await push_notification(message, start);
         response = JSON.parse(result);
 
         success_count += response["success"];
@@ -239,7 +232,6 @@ function pushnotication(req, res) {
         response_array = response["results"].slice().reverse();
         console.log("success", response);
         let i = 0;
-        console.log(store);
         while (i < response_array.length) {
           if (response_array[i]["message_id"] != null) {
             // documents array
@@ -254,7 +246,6 @@ function pushnotication(req, res) {
         //store+=1;
       } catch (error) {
         response = JSON.parse(error);
-        //console.log(response);
         success_count += response["success"];
         failure_count += response["failure"];
         response_array = response["results"].slice().reverse();
@@ -318,6 +309,7 @@ function pushnotication(req, res) {
     start += 1;
   }
 
+  res.render("index.ejs");
   }
 
   catch(err){
@@ -325,7 +317,6 @@ function pushnotication(req, res) {
   }
 })();
 
-res.send(JSON.stringify("Succesfully sent the notification to users"));
 
 }
 
