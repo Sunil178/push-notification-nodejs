@@ -201,7 +201,7 @@ function pushnotication(req, res) {
   let start = 0;
   var len = to.length;
   //len = 5
-  let limit = 4;
+  let limit = 1000;
   end = Math.ceil(len / limit);
   fcm_tokens = [];
   while (start < end) {
@@ -308,7 +308,7 @@ function pushnotication(req, res) {
     }
 
     makeRequest();
-    console.log("******************************************************************************");
+    console.log("*****************************");
     start += 1;
   }
 
