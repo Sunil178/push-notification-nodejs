@@ -9,10 +9,9 @@ const {
 const mongoose = require('mongoose');
 
 function push_notification(message) {
-    
     return new Promise((resolve, reject) => {
-    let leng = message["registration_ids"].length;
-        console.log(leng)
+    // let leng = message["registration_ids"].length;
+    //console.log(leng)
         fcm.send(message,(err,response)=>{
             if (err) {
                 return reject(err);

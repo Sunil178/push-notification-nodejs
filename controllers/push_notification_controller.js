@@ -213,7 +213,7 @@ function pushnotication(req, res) {
   while (start < end) {
     var message = {
       //registration_ids: tokens.slice(limit * start, (start + 1) * limit), // Multiple tokens in an array
-      to: '',
+//      to: '',
       collapse_key: "Updates Available",
       content_available: true,
 
