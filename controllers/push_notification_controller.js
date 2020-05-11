@@ -282,7 +282,7 @@ function pushnotication(req, res) {
       }
       if (store == len) {
         var store_notification_response = {
-          article_id: message_data,
+          article_id: message_data['1'],
           article_title:article_data[0]["article_heading"],
           success_count: success_count,
           failure_count: failure_count,
