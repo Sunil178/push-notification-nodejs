@@ -22,6 +22,9 @@ const ArticleResponseSchema = new Schema({
         notification_response: {
             type: String,
         },
+        name:{
+            type:String,
+        },
         fcm_token: {
             type: String,
         },

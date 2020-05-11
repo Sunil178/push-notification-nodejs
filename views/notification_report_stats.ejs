@@ -28,7 +28,7 @@
                 <% notification_stats.forEach(function(element,i){ %>
                 <tr>
                     <td><%= i %></td>
-                    <td><%= users_info[i]['email'] %></td>
+                    <td><%= element['name'] %></td>
                     <td><%= element['notification_response'] %></td>
                 </tr>
                 <% }); %>

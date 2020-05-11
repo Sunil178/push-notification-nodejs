@@ -276,11 +276,10 @@
 
     $('body').on('click',"button[name=notify_btn]", function (e) {
         e.preventDefault();
-        //alert($(this).attr("value"));
-
-            // alert($(e.currentTarget).val());
+            //console.log();
             var data = $(this).val();
             //console.log(data)
+            if($(this).closest("tr").find(".status").val()=='0'){
             swal({
                 title: "Are you sure?",
                 text: "You Article will get published!",
@@ -308,13 +307,17 @@
                         },
                         dataType: '',
                     });
-                } else {
-                    //console.log(data.split(","))
-                    //  alert("The alert was dismissed by the user: ");
-                }
+                } 
             }).catch(function (reason) {
                 alert("The alert was dismissed by the user: " + reason);
             });
+        }
+        else{
+            swal({
+                title: "Already Sent The Notification",
+                type: 'info',
+            })
+        }
         
     });
 </script>
