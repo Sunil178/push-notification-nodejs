@@ -180,7 +180,16 @@
                             <td class="art"><%= check.article_author %></td>
                             <td class="art"><%= check.time_ago %></td>
                             <td class="art"><%= check.notification_text %></td>
-                            <td class="art">-</td>
+                            <td class="art">
+                                <input type="checkbox" class="notification_sequence" value="<%=check.id%>" name="notification_sequence">
+                                <br>
+                                <select class="notif_sequence">
+                                    <option value="0">Choose</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                </select>
+                            </td>
                             <td class="art"><%= check.article_status %></td>
                             <td class="art">
                                 <a><span class="btn btn-danger"><i class="fa fa-trash" title="Delete Sales"></i></span></a>
@@ -230,7 +239,16 @@
                               <td>"+check.article_author+"</td>\
                               <td>"+check.time_ago+"</td>\
                               <td>"+check.notification_text+"</td>\
-                              <td>-</td>\
+                            <td class='art'>\
+                                <input type='checkbox' class='notification_sequence' value='" + check.id + "' name='notification_sequence'>\
+                                <br>\
+                                <select class='notif_sequence'>\
+                                    <option value='0'>Choose</option>\
+                                    <option value='1'>1</option>\
+                                    <option value='2'>2</option>\
+                                    <option value='3'>3</option>\
+                                </select>\
+                            </td>\
                               <td>"+check.article_status+"</td>\
                               <td>\
                                 <a><span class='btn btn-danger'><i class='fa fa-trash' title='Delete Sales'></i></span></a>\
@@ -252,7 +270,16 @@
                               <td>"+check.article_author+"</td>\
                               <td>"+check.times_ago+"</td>\
                               <td>"+check.notification_text+"</td>\
-                              <td>-</td>\
+                            <td class='art'>\
+                                <input type='checkbox' class='notification_sequence' value='" + check.id + "' name='notification_sequence'>\
+                                <br>\
+                                <select class='notif_sequence'>\
+                                    <option value='0'>Choose</option>\
+                                    <option value='1'>1</option>\
+                                    <option value='2'>2</option>\
+                                    <option value='3'>3</option>\
+                                </select>\
+                            </td>\
                               <td>"+check.article_status+"</td>\
                               <td>\
                                 <a><span class='btn btn-danger'><i class='fa fa-trash' title='Delete Sales'></i></span></a>\
@@ -274,12 +301,28 @@
         }
     });
 </script>
+
+
 <script type="text/javascript">
+
 
     $('body').on('click',"button[name=notify_btn]", function (e) {
         e.preventDefault();
             //console.log();
             var data = $(this).val();
+
+
+          checkboxes = $(".notification_sequence")
+
+          obj = {}
+          for(var i = 0; i < checkboxes.length; i++){
+            if($(checkboxes[i]).is(":checked")) {
+              index  = $(checkboxes[i]).parent().children(".notif_sequence").val().toString();
+              obj[index] = $(checkboxes[i]).val() 
+            }
+          }
+
+
             //console.log(data)
             if($(this).closest("tr").find(".status").val()=='0'){
             swal({
@@ -298,7 +341,7 @@
                         type: "POST",
                         url: '/pushnotication/',
                         data: {
-                            data: data
+                            data: obj
                         },
                         success: function(obj) {
                             console.log("reposonse",JSON.parse(obj));
