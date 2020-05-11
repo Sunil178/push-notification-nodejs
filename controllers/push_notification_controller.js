@@ -199,8 +199,9 @@ function pushnotication(req, res) {
       },
       data: {
         //you can send only notification or only data(or include both)
-        article_id: 9967,
-        article_main_source: article_data[0]["main_source"],
+        article_id: '9967',
+        click_action: 'FLUTTER_NOTIFICATION_CLICK',
+        android_channel_id:'volvmedia_volvapp',
       },
     };
     async function makeRequest() {
