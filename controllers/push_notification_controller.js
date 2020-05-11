@@ -121,8 +121,6 @@ function notificationReportStats(req, res) {
         notification_stats: docs[0]["article_response"],
       });
     });
-
-
 }
 
 function pushnotication(req, res) {
@@ -169,13 +167,16 @@ function pushnotication(req, res) {
 (async () => {
   try{  
   const result = await get_tokens_query();
-    console.log(result)
+    // console.log(result)
   //Sending the data to multiple users
   for (var i = 0; i < result.length; i++) {
+    if(!tokens.includes(result[i]["token"])){
     tokens.push(result[i]["token"]);
     email.push(result[i]['email']);
+    }
   }
-   //var to = Array.from(new Set(tokens));
+  // console.log(email.length)
+  
   var to = tokens;
   let start = 0;
   var len = to.length;
@@ -299,7 +300,7 @@ function pushnotication(req, res) {
     start += 1;
   }
 
-  // res.render("index.ejs");
+  res.render("index.ejs");
   }
 
   catch(err){
