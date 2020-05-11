@@ -86,8 +86,8 @@ var notification_send_report = [];
   NotificationResponseReport.find({},(err, docs) => {
     //  console.log(docs[0]['article_response']);
     if (docs.length != 0) {
-      notification_reports=docs.reverse();
-      notification_reports.forEach(element=>{
+      //notification_reports=docs.reverse();
+     docs.reverse().forEach(element=>{
         notification_send_report.push({
         article_id: element["article_id"],
         article_title: element["article_title"],
@@ -200,7 +200,7 @@ function pushnotication(req, res) {
       },
       data: {
         //you can send only notification or only data(or include both)
-        article_id: '(9964, 9970, 9967)',
+        article_id: '(9979,9978,9977)',
         click_action: 'FLUTTER_NOTIFICATION_CLICK',
         android_channel_id:'volvmedia_volvapp',
       },
