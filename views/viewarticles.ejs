@@ -180,9 +180,9 @@
                             <td class="art"><%= check.time_ago %></td>
                             <td class="art"><%= check.notification_text %></td>
                             <td class="art">
-                                <input type="checkbox" class="notification_sequence" value="<%=check.id%>" name="notification_sequence">
+                                <input type="checkbox" class="notification_sequence form-control" value="<%=check.id%>" name="notification_sequence">
                                 <br>
-                                <select class="notif_sequence">
+                                <select class="notif_sequence form-control">
                                     <option value="0">Choose</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -311,17 +311,6 @@
             var data = $(this).val();
 
 
-          checkboxes = $(".notification_sequence")
-
-          obj = {}
-          for(var i = 0; i < checkboxes.length; i++){
-            if($(checkboxes[i]).is(":checked")) {
-              index  = $(checkboxes[i]).parent().children(".notif_sequence").val().toString();
-              obj[index] = $(checkboxes[i]).val() 
-            }
-          }
-
-
             //console.log(data)
             if($(this).closest("tr").find(".status").val()=='0'){
             swal({
@@ -336,11 +325,20 @@
                 //closeOnCancel: false
             }).then((e) => {
                 if (e['value']) {
+                    checkboxes = $(".notification_sequence")
+          var obj = {}
+          for(var i = 0; i < checkboxes.length; i++){
+            if($(checkboxes[i]).is(":checked")) {
+              index  = $(checkboxes[i]).parent().children(".notif_sequence").val().toString();
+              obj[index] = $(checkboxes[i]).val();
+            }
+          }
+          //console.log(obj)
                     $.ajax({
                         type: "POST",
                         url: '/pushnotication/',
                         data: {
-                            data: obj
+                            data: JSON.stringify(obj)
                         },
                         success: function(obj) {
                             console.log("reposonse",JSON.parse(obj));

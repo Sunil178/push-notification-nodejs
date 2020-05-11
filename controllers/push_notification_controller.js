@@ -130,16 +130,24 @@ function pushnotication(req, res) {
   var success_count = 0;
   var failure_count = 0;
   var store_response = [];
-  var message_data = req.body.data;
-  var email=[]
+  var message_data = JSON.parse(req.body.data);
+  var email=[];
   var email_users=[];
-
+  var ids_data=''
+  for (let index = 1; index <= 3; index++) {
+    if(message_data[`${index}`]){
+      console.log(message_data[`${index}`]);
+      ids_data+=message_data[`${index}`]+',';
+    }
+  }  
+  // console.log(`(${ids_data.slice(0,ids_data.length-1)})`);
+  
   //Query to get the data from database for a particular id
-  var get_data_query = `SELECT * FROM articles where id=${message_data}`;
+  var get_data_query = `SELECT * FROM articles where id=${message_data['1']}`;
 
   // Update Query for status
   con.connection.query(
-    `UPDATE articles SET status='1' WHERE id = ${message_data}`
+    `UPDATE articles SET status='1' WHERE id = ${message_data['1']}`
   );
 
   con.connection.query(get_data_query, (err, result) => {
@@ -200,7 +208,7 @@ function pushnotication(req, res) {
       },
       data: {
         //you can send only notification or only data(or include both)
-        article_id: '(9979,9978,9977)',
+        article_id: `(${ids_data.slice(0,ids_data.length-1)})`,
         click_action: 'FLUTTER_NOTIFICATION_CLICK',
         android_channel_id:'volvmedia_volvapp',
       },
