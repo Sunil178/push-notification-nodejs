@@ -115,7 +115,6 @@ function notificationReportStats(req, res) {
       users_info = [];
       if (err) res.send(err);
 
-      
       res.render("notification_report_stats.ejs", {
         notification_stats: docs[0]["article_response"],
       });
@@ -200,7 +199,7 @@ function pushnotication(req, res) {
       },
       data: {
         //you can send only notification or only data(or include both)
-        article_id: message_data,
+        article_id: '(9972)',
         article_main_source: article_data[0]["main_source"],
       },
     };
