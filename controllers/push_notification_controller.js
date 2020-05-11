@@ -58,11 +58,12 @@ function articlesGet(req, res) {
 
   //Get all data from the table to display
   var get_query = "SELECT * FROM articles";
-  con.connection.query(get_query, async (err, result) => {
+  con.connection.query(get_query,  (err, result) => {
     if (err) res.send(err);
-    data = await result;
+
+    res.render("viewarticles.ejs", {"articles": result.slice(0, 15)});
   });
-  res.render("viewarticles.ejs", {"articles": data.slice(0, 15)});
+
 }
 
 function scroll_articles(req, res) {
@@ -107,23 +108,21 @@ var notification_send_report = [];
 
 }
 
-var notification_report_stats = [];
 function notificationReportStats(req, res) {
   NotificationResponseReport.find({
       article_id: req.params.id
-    },
-    (err, docs) => {
+    },(err, docs) => {
       notification_report_stats = [];
       users_info = [];
       if (err) res.send(err);
 
-      notification_report_stats = docs[0]["article_response"];
-    }
-  );
+      
+      res.render("notification_report_stats.ejs", {
+        notification_stats: docs[0]["article_response"],
+      });
+    });
 
-  res.render("notification_report_stats.ejs", {
-    notification_stats: notification_report_stats,
-  });
+
 }
 
 function pushnotication(req, res) {
@@ -286,7 +285,7 @@ function pushnotication(req, res) {
           store_notification_response,
           function (err, docs) {
             if (err) {
-              return console.error("my error", err);
+              console.error("my error", err);
             } else {
               console.log("Multiple documents inserted to Collection");
             }
