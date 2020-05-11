@@ -77,8 +77,8 @@ function scroll_articles(req, res) {
     else {
       data = await result;
     }
+    res.send(JSON.stringify(data.slice(start_index + 1, start_index + 10)));
   });
-  res.send(JSON.stringify(data.slice(start_index + 1, start_index + 10)));
 }
 
 
