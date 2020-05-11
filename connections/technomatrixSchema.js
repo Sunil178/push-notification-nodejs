@@ -5,9 +5,11 @@ const ArticleResponseSchema = new Schema({
     article_id: {
         type: String,
     },
+    article_title:{
+        type: String,
+    },
     success_count:{
         type: String,
-
     },
     failure_count:{
         type: String,

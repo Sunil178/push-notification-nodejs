@@ -89,7 +89,7 @@ var notification_send_report = [];
       docs.forEach(element=>{
         notification_send_report.push({
         article_id: element["article_id"],
-        article_title: '',
+        article_title: element["article_title"],
         success_count: element["success_count"],
         failure_count: element["failure_count"],
         invalid_registration: element["invalid_registration"],
@@ -130,7 +130,7 @@ function pushnotication(req, res) {
   var article_data = [];
   var invalid_registration_count = 0;
   var not_registered_count = 0;
-
+  var store=0;
   var success_count = 0;
   var failure_count = 0;
   var store_response = [];
@@ -225,6 +225,7 @@ function pushnotication(req, res) {
             });
           }
           i += 1;
+          store+=1;
         }
  
       } catch (error) {
@@ -266,6 +267,7 @@ function pushnotication(req, res) {
             }
 
           }
+          store+=1;
           i += 1;
         }
   
@@ -273,6 +275,7 @@ function pushnotication(req, res) {
       if (store == len) {
         var store_notification_response = {
           article_id: message_data,
+          article_title:article_data[0]["article_heading"],
           success_count: success_count,
           failure_count: failure_count,
           invalid_registration: invalid_registration_count,
