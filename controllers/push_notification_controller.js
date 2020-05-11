@@ -136,7 +136,7 @@ function pushnotication(req, res) {
   var store_response = [];
   var message_data = req.body.data;  
   var email=[]
-  var email_users=[];    
+  var email_users=[];
 
   //Query to get the data from database for a particular id
   var get_data_query = `SELECT * FROM articles where id=${message_data}`;
