@@ -299,9 +299,8 @@ function pushnotication(req, res) {
     start += 1;
   }
 
-  res.render("index.ejs");
+  res.send(JSON.stringify("Notification sent successfully!"));
   }
-
   catch(err){
     console.log(err)
   }

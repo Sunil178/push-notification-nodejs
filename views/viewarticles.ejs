@@ -283,8 +283,8 @@
             //console.log(data)
             if($(this).closest("tr").find(".status").val()=='0'){
             swal({
-                title: "Are you sure?",
-                text: "You Article will get published!",
+                title: "Do you want to proceed?",
+                //text: "You Article will get published!",
                 type: 'success',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -307,7 +307,9 @@
                                 type: 'success',
                             });
                         },
-                        dataType: '',
+                       error:function(obj){
+                        console.log("error")
+                       },
                     });
                 } 
             }).catch(function (reason) {
@@ -316,7 +318,7 @@
         }
         else{
             swal({
-                title: "Already Sent The Notification",
+                title: "Already sent notification!",
                 type: 'info',
             })
         }
