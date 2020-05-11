@@ -8,14 +8,21 @@ const {
 //Import mongoose
 const mongoose = require('mongoose');
 
-function push_notification(message) {
+function push_notification(message, index) {
+    
     return new Promise((resolve, reject) => {
-    // let leng = message["registration_ids"].length;
-    //console.log(leng)
+    let leng = message["registration_ids"].length;
+        // console.log(leng)
         fcm.send(message,(err,response)=>{
             if (err) {
+                err = JSON.parse(err);
+                err["index"] = index;
+                err = JSON.stringify(err);
                 return reject(err);
             }
+            response = JSON.parse(response);
+            response["index"] = index;
+            response = JSON.stringify(response);
             return resolve(response);
         });
     });

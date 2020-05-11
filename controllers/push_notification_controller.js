@@ -18,7 +18,7 @@ var a = [];
 function article(req, res) {
   //   for (let index = 0; index < 5000; index++) {
 
-  //     a.push(['','','',''])
+  //     a.push(['fuid1234321hufebd','','','eKxlBWgpi3g:APA91bFJcZcCTP6H_jNyxQMsxHZmbEuAli822VSdQ9Xq1WJk774IFZx0kfNbt87xw7jU85MCYm6zWwDz3GpTPlFGWTsnY7WMVNYbcJk1-oPgeSNQ0yOrRkpME62fBxFRUM3J1VSZ3LII'])
 
   //   }
   // var sql = `INSERT INTO users (fuid,email,password,token) VALUES ?`;
@@ -61,9 +61,7 @@ function articlesGet(req, res) {
     if (err) res.send(err);
     data = await result;
   });
-  res.render("viewarticles.ejs", {
-    articles: data.slice(0, 15),
-  });
+  res.render("viewarticles.ejs", {"articles": data.slice(0, 15)});
 }
 
 function scroll_articles(req, res) {
@@ -196,24 +194,20 @@ function pushnotication(req, res) {
 
   //Sending the data to multiple users
   for (var i = 0; i < result.length; i++) {
-    // if(!tokens.includes(result[i]["token"])){
-    //   tokens.push(result[i]["token"]);
-    // }
     tokens.push(result[i]["token"]);
-
   }
-  tokens=Array.from(new Set(tokens));
-  var fcm_tokens = tokens.slice().reverse();
+  var to = Array.from(new Set(tokens));
+  // var to = tokens;
   let start = 0;
-  var len = tokens.length;
+  var len = to.length;
   //len = 5
-  let limit = 5;
+  let limit = 1000;
   end = Math.ceil(len / limit);
-
+  fcm_tokens = [];
   while (start < end) {
+    fcm_tokens.push(to.slice(limit * start, (start + 1) * limit));
     var message = {
-      //registration_ids: tokens.slice(limit * start, (start + 1) * limit), // Multiple tokens in an array
-//      to: '',
+      registration_ids: fcm_tokens[start], // Multiple tokens in an array
       collapse_key: "Updates Available",
       content_available: true,
 
@@ -230,22 +224,20 @@ function pushnotication(req, res) {
     };
     async function makeRequest() {
       try {
-        const result = await push_notification(message);
-        //console.log("Resolved", result);
+        const result = await push_notification(message, start);
         response = JSON.parse(result);
-
         success_count += response["success"];
         failure_count += response["failure"];
-        response_array = response["results"].slice().reverse();
+        response_array = response["results"];
         console.log("success", response);
         let i = 0;
-        console.log(store);
         while (i < response_array.length) {
           if (response_array[i]["message_id"] != null) {
             // documents array
             store_response.push({
               notification_response: response_array[i]["message_id"],
-              fcm_token: fcm_tokens[store],
+              fcm_token: fcm_tokens[response["index"]][i],
+              // index: response["index"],
             });
             store += 1;
           }
@@ -254,10 +246,9 @@ function pushnotication(req, res) {
         //store+=1;
       } catch (error) {
         response = JSON.parse(error);
-        //console.log(response);
         success_count += response["success"];
         failure_count += response["failure"];
-        response_array = response["results"].slice().reverse();
+        response_array = response["results"];
         console.log("error", response);
         let i = 0;
 
@@ -266,7 +257,8 @@ function pushnotication(req, res) {
             // documents array
             store_response.push({
               notification_response: response_array[i]["message_id"],
-              fcm_token: fcm_tokens[store],
+              fcm_token: fcm_tokens[response["index"]][i],
+              // index: response["index"],
             });
             store += 1;
           } else {
@@ -275,13 +267,15 @@ function pushnotication(req, res) {
               invalid_registration_count += 1;
               store_response.push({
                 notification_response: response_array[i]["error"],
-                fcm_token: fcm_tokens[store],
+                fcm_token: fcm_tokens[response["index"]][i],
+                // index: response["index"],
               });
             } else {
               not_registered_count += 1;
               store_response.push({
                 notification_response: response_array[i]["error"],
-                fcm_token: fcm_tokens[store],
+                fcm_token: fcm_tokens[response["index"]][i],
+                // index: response["index"],
               });
             }
 
@@ -298,7 +292,7 @@ function pushnotication(req, res) {
           failure_count: failure_count,
           invalid_registration: invalid_registration_count,
           not_registered: not_registered_count,
-          article_response: store_response.reverse(),
+          article_response: store_response,
         };
         NotificationResponseReport.collection.insertOne(
           store_notification_response,
@@ -314,10 +308,11 @@ function pushnotication(req, res) {
     }
 
     makeRequest();
-    console.log("******************************************************************************");
+    console.log("*****************************");
     start += 1;
   }
 
+  res.render("index.ejs");
   }
 
   catch(err){
@@ -325,7 +320,6 @@ function pushnotication(req, res) {
   }
 })();
 
-res.send(JSON.stringify("Succesfully sent the notification to users"));
 
 }
 
