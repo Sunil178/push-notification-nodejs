@@ -61,7 +61,7 @@ function articlesGet(req, res) {
   con.connection.query(get_query,  (err, result) => {
     if (err) res.send(err);
 
-    res.render("viewarticles.ejs", {"articles": result.slice(0, 15)});
+    res.render("viewarticles.ejs", {"articles": result.reverse().slice(0, 15)});
   });
 
 }
@@ -69,15 +69,14 @@ function articlesGet(req, res) {
 function scroll_articles(req, res) {
   var response = [];
   start_index = Number(req.params.id);
-  //console.log("hii",start_index);
-
   var get_query = "SELECT * FROM articles";
   con.connection.query(get_query, async (err, result) => {
     if (err) response["status"] = "error";
     else {
       data = await result;
+      data.reverse();
     }
-    res.send(JSON.stringify(data.slice(start_index + 1, start_index + 10)));
+    res.send(JSON.stringify(data.slice(start_index , start_index + 15)));
   });
 }
 

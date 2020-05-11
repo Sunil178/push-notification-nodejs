@@ -1,9 +1,9 @@
 var FCM = require('fcm-node');
 // put your server key here
-var serverKey = 'AAAA7_Am0qE:APA91bHcDZBbgN2Z80SHJ_LWn3ITV--7LjTB5Lx6HGL1FdpFkwsGRJTYYeIZIiJzzPttqP4703hn0ukG2xFl4GQlIGtQzH-pNFPWCXMp-28r_1pU4LkF4mxEBTkaGsKVu08UQcoEDjBM'; 
+// var serverKey = 'AAAA7_Am0qE:APA91bHcDZBbgN2Z80SHJ_LWn3ITV--7LjTB5Lx6HGL1FdpFkwsGRJTYYeIZIiJzzPttqP4703hn0ukG2xFl4GQlIGtQzH-pNFPWCXMp-28r_1pU4LkF4mxEBTkaGsKVu08UQcoEDjBM'; 
 
 //client server key
-//var serverKey = 'AAAALpOh8nA:APA91bErQAVgKN3WTuFY9EKBchyvSWI-f2CsK6Bv4zqxsnJWoyuCbSoOMOEpGEhn-fFTQFYW3gWm96fg3RK3suCwzulNTAMQc4EP8xe_Q9UZmA80-Ace9iXR8xBlQFjzUNkjG4ZTJzxo'; 
+var serverKey = 'AAAALpOh8nA:APA91bErQAVgKN3WTuFY9EKBchyvSWI-f2CsK6Bv4zqxsnJWoyuCbSoOMOEpGEhn-fFTQFYW3gWm96fg3RK3suCwzulNTAMQc4EP8xe_Q9UZmA80-Ace9iXR8xBlQFjzUNkjG4ZTJzxo'; 
 
 var fcm = new FCM(serverKey);
 //Import A Mongoose Schema

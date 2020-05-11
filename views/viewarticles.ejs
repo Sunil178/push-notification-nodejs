@@ -171,7 +171,7 @@
                     </thead>
 
                     <tbody>
-                        <input type="hidden" name="" id="start_point" value="10">
+                        <input type="hidden" name="" id="start_point" value="15">
                         <% articles.forEach(function(check){ %>
                         <tr>
                             <td><img src="<%= check.article_image %>" height="100px" width="100px"></td>
@@ -217,7 +217,7 @@
                     data: data
                 },
                 success: function(obj) {
-                    $('#start_point').val(parseInt(data)+10);
+                    $('#start_point').val(parseInt(data)+15);
                     scroll_data=JSON.parse(obj);
                     scroll_data.forEach(function(check){
                         //console.log(check)
