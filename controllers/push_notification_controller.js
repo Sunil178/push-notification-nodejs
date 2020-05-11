@@ -129,7 +129,7 @@ function pushnotication(req, res) {
   var success_count = 0;
   var failure_count = 0;
   var store_response = [];
-  var message_data = req.body.data;  
+  var message_data = req.body.data;
   var email=[]
   var email_users=[];
 
@@ -199,7 +199,7 @@ function pushnotication(req, res) {
       },
       data: {
         //you can send only notification or only data(or include both)
-        article_id: '(9972)',
+        article_id: 9972,
         article_main_source: article_data[0]["main_source"],
       },
     };
